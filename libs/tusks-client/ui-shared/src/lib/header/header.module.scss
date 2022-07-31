@@ -1,0 +1,45 @@
+.ui-header-container {
+  position: relative;
+  z-index: 9000;
+  background: transparent;
+  margin-bottom: -7.2rem;
+}
+
+.ui-header-row {
+  max-width: 75rem;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.ui-header {
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  width: 100%;
+}
+
+.ui-header-center,
+.ui-header-right,
+.ui-header-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ui-header-search {
+  gap: 0.4rem;
+}
+
+.ui-header-profile-btn {
+  gap: 0.2rem;
+}
+
+.ui-header-right {
+  gap: 2rem;
+}

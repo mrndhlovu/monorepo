@@ -14,7 +14,22 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@loxodonta/tusks-auth-api/util-interfaces": [
+        "libs/tusks-auth-api/util-interfaces/src/index.ts"
+      ],
+      "@loxodonta/tusks-client/components": [
+        "libs/tusks-client/components/src/index.ts"
+      ],
+      "@loxodonta/tusks-client/tusks-components": [
+        "libs/tusks-client/tusks-components/src/index.ts"
+      ],
+      "@loxodonta/tusks-client/ui-shared": [
+        "libs/tusks-client/ui-shared/src/index.ts"
+      ],
+      "@loxodonta/tusks-client/utils": ["libs/tusks-client/utils/src/index.ts"],
+      "@loxodonta/tusks-components": ["libs/tusks-components/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
