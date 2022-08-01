@@ -1,7 +1,7 @@
-import { Subjects } from "../../types"
-import { IBoardCreatedEvent } from "./board-created-event"
+import { KafkaTopics } from '../../types';
+import { IBoardCreatedEvent } from './board-created-event';
 
 export interface IGetBoardEvent {
-  subject: Subjects.GetBoardById
-  data: IBoardCreatedEvent["data"]
+  topic: KafkaTopics.GetBoardById;
+  data: IBoardCreatedEvent['data'];
 }

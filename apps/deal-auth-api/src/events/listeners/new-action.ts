@@ -1,37 +1,35 @@
-import { Message } from 'node-nats-streaming';
-
 import {
-  Listener,
-  Subjects,
+  Consumer,
+  KafkaTopics,
   queueGroupNames,
   INewActionEvent,
+  kafkaService,
 } from '@loxodonta/deal-apis/shared-utils';
 
-import { natsService } from '../../services/nats';
 import { User } from '../../models/User';
 import { AuthedActionPublisher } from '../publishers/authed-action';
 
-export class NewActionListener extends Listener<INewActionEvent> {
-  readonly subject: Subjects.NewAction = Subjects.NewAction;
+export class NewActionConsumer extends Consumer<INewActionEvent> {
+  readonly topic: KafkaTopics.NewAction = KafkaTopics.NewAction;
   queueGroupName = queueGroupNames.AUTH_ACTION_QUEUE_GROUP;
 
-  async onMessage(data: INewActionEvent['data'], msg: Message) {
-    const user = await User.findById(data.userId);
+  async handleEachMessage(data: INewActionEvent['data']) {
+    data.forEach(async (msg) => {
+      const user = await User.findById(msg.userId);
 
-    if (user) {
-      new AuthedActionPublisher(natsService.client).publish({
-        ...data,
-        user: {
-          id: user._id,
-          initials: user.initials!,
-          username: user?.username,
-          fullName: user?.firstName
-            ? `${user?.firstName} ${user?.lastName}`
-            : ``,
-        },
-      });
-    }
-
-    msg.ack();
+      if (user) {
+        new AuthedActionPublisher(kafkaService.client).publish({
+          ...msg,
+          user: {
+            id: user._id,
+            initials: user.initials!,
+            username: user?.username,
+            fullName: user?.firstName
+              ? `${user?.firstName} ${user?.lastName}`
+              : ``,
+          },
+        } as any);
+      }
+    });
   }
 }

@@ -1,11 +1,13 @@
-import { ACTION_TYPES, Subjects } from "../../types"
+import { ACTION_TYPES, KafkaTopics } from '../../types';
 
 export interface INewActionEvent {
-  subject: Subjects.NewAction
-  data: {
-    actionKey: string
-    entities: { boardId: string; name?: string; [key: string]: any }
-    type: ACTION_TYPES
-    userId: string
-  }
+  topic: KafkaTopics.NewAction;
+  data: [
+    {
+      actionKey: string;
+      entities: { boardId: string; name?: string; [key: string]: any };
+      type: ACTION_TYPES;
+      userId: string;
+    }
+  ];
 }

@@ -1,7 +1,7 @@
-import { INewActionEvent } from "../user/new-action"
-import { Publisher } from "../../services/base-publisher"
-import { Subjects } from "../../types"
+import { INewActionEvent } from '../user/new-action';
+import { Producer } from '../../services/base-producer';
+import { KafkaTopics } from '../../types';
 
-export class NewActionPublisher extends Publisher<INewActionEvent> {
-  subject: Subjects.NewAction = Subjects.NewAction
+export class NewActionPublisher extends Producer<INewActionEvent> {
+  topic: KafkaTopics.NewAction = KafkaTopics.NewAction;
 }

@@ -2,6 +2,7 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "deal-accounts-api": "apps/deal-accounts-api",
     "deal-apis": "libs/deal-apis",
     "deal-apis-shared-utils": "libs/deal-apis/shared-utils",
     "deal-auth-api": "apps/deal-auth-api",

@@ -7,6 +7,7 @@ import {
   NotAuthorisedError,
   NotFoundError,
   permissionManager,
+  SendEmailPublisher,
 } from '@loxodonta/deal-apis/shared-utils';
 import { AuthService } from '../services/auth';
 import {
@@ -17,14 +18,9 @@ import {
   RESTORE_ACCOUNT_ENDPOINT,
   LOGIN_ENDPOINT,
 } from '../utils/constants';
-import { natsService } from '../services/nats';
+
 import { IUserDocument, User } from '../models/User';
-import {
-  UserDeletedPublisher,
-  UserVerifiedPublisher,
-} from '../events/publishers';
 import { mfaService, TokenService } from '../services';
-import { SendEmailPublisher } from '../events/publishers/send-email';
 
 declare global {
   namespace Express {
@@ -78,7 +74,7 @@ class AuthController {
       from: DEFAULT_EMAIL,
     };
 
-    await new SendEmailPublisher(natsService.client).publish(email);
+    // await new SendEmailPublisher(natsService.client).publish(email);
 
     res.status(201).send({});
   };
@@ -168,11 +164,11 @@ class AuthController {
 
     await user.save();
 
-    new UserVerifiedPublisher(natsService.client).publish({
-      id: user._id,
-      email: user.email,
-      verified: user.isVerified,
-    });
+    // new UserVerifiedPublisher(natsService.client).publish({
+    //   id: user._id,
+    //   email: user.email,
+    //   verified: user.isVerified,
+    // });
 
     req.session = null;
     res.send({ success: true });
@@ -221,7 +217,7 @@ class AuthController {
       from: DEFAULT_EMAIL,
     };
 
-    await new SendEmailPublisher(natsService.client).publish(email);
+    // await new SendEmailPublisher(natsService.client).publish(email);
 
     res.send({
       message: 'Please check you email for your verification link',
@@ -263,7 +259,7 @@ class AuthController {
       subject: 'Password updated.',
       from: DEFAULT_EMAIL,
     };
-    await new SendEmailPublisher(natsService.client).publish(email);
+    // await new SendEmailPublisher(natsService.client).publish(email);
 
     res.send({ success: true });
   };
@@ -309,11 +305,11 @@ class AuthController {
     await user.delete();
 
     if (user.isVerified) {
-      new UserDeletedPublisher(natsService.client).publish({
-        id: userId,
-        boardIds,
-        email,
-      });
+      // new UserDeletedPublisher(natsService.client).publish({
+      //   id: userId,
+      //   boardIds,
+      //   email,
+      // });
     }
     req.session = null;
     // TokenService.invalidateRefreshToken(user)
@@ -348,7 +344,7 @@ class AuthController {
       from: DEFAULT_EMAIL,
     };
 
-    await new SendEmailPublisher(natsService.client).publish(email);
+    // await new SendEmailPublisher(natsService.client).publish(email);
 
     const response = {
       message: 'Please check you email for your reset password link.',
@@ -392,7 +388,7 @@ class AuthController {
       subject: 'Password updated.',
       from: DEFAULT_EMAIL,
     };
-    await new SendEmailPublisher(natsService.client).publish(email);
+    // await new SendEmailPublisher(natsService.client).publish(email);
 
     res.status(200).send({ success: true });
   };
@@ -506,7 +502,7 @@ class AuthController {
       subject: 'Account locked.',
       from: DEFAULT_EMAIL,
     };
-    await new SendEmailPublisher(natsService.client).publish(email);
+    // await new SendEmailPublisher(natsService.client).publish(email);
 
     res.status(200).send({ success: true });
   };
@@ -550,7 +546,7 @@ class AuthController {
       subject: 'Account recovery.',
       from: DEFAULT_EMAIL,
     };
-    await new SendEmailPublisher(natsService.client).publish(email);
+    // await new SendEmailPublisher(natsService.client).publish(email);
 
     res.status(200).send({ success: true });
   };
@@ -586,7 +582,7 @@ class AuthController {
       subject: 'Account restored.',
       from: DEFAULT_EMAIL,
     };
-    await new SendEmailPublisher(natsService.client).publish(email);
+    // await new SendEmailPublisher(natsService.client).publish(email);
 
     res.status(200).send({});
   };

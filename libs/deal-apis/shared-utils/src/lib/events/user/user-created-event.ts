@@ -1,12 +1,12 @@
-import { Subjects, IEventUserData } from "../../types"
+import { KafkaTopics, IEventUserData } from '../../types';
 
 interface UserData extends IEventUserData {
-  username: string
-  initials?: string
-  otp: string
+  username: string;
+  initials?: string;
+  otp: string;
 }
 
 export interface IUserCreatedEvent {
-  subject: Subjects.UserCreated
-  data: UserData
+  topic: KafkaTopics.UserCreated;
+  data: UserData[];
 }

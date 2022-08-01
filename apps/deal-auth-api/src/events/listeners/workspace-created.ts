@@ -1,31 +1,29 @@
-import { Message } from 'node-nats-streaming';
-
 import {
-  Listener,
-  Subjects,
+  Consumer,
+  KafkaTopics,
   queueGroupNames,
   IWorkspaceCreatedEvent,
 } from '@loxodonta/deal-apis/shared-utils';
 import { User } from '../../models/User';
 
-export class WorkspaceCreatedListener extends Listener<IWorkspaceCreatedEvent> {
-  readonly subject: Subjects.WorkspaceCreated = Subjects.WorkspaceCreated;
+export class WorkspaceCreatedConsumer extends Consumer<IWorkspaceCreatedEvent> {
+  readonly topic: KafkaTopics.WorkspaceCreated = KafkaTopics.WorkspaceCreated;
   queueGroupName = queueGroupNames.AUTH_QUEUE_GROUP;
 
-  async onMessage(data: IWorkspaceCreatedEvent['data'], msg: Message) {
+  async handleEachMessage(data: IWorkspaceCreatedEvent['data']) {
     console.log('Event data ', data);
 
-    const user = await User.findOneAndUpdate(
-      { _id: data.ownerId },
-      {
-        $push: {
-          workspaces: data.id,
-        },
-      }
-    );
+    data.forEach(async (msg) => {
+      const user = await User.findOneAndUpdate(
+        { _id: msg.ownerId },
+        {
+          $push: {
+            workspaces: msg.id,
+          },
+        }
+      );
 
-    await user!?.save();
-
-    msg.ack();
+      await user!?.save();
+    });
   }
 }

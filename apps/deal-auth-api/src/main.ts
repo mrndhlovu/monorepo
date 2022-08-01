@@ -1,4 +1,17 @@
-import { BadRequestError, Database } from '@loxodonta/deal-apis/shared-utils';
+import {
+  BadRequestError,
+  Database,
+  kafkaService,
+} from '@loxodonta/deal-apis/shared-utils';
+
+import {
+  BoardCreatedConsumer,
+  BoardDeletedConsumer,
+  AccountUpdatedConsumer,
+  NewActionConsumer,
+  BoardViewedConsumer,
+  WorkspaceCreatedConsumer,
+} from './events/listeners/index';
 
 import app from './app';
 
@@ -10,7 +23,9 @@ class Server {
       JWT_REFRESH_TOKEN_SIGNATURE,
       JWT_OTP_TOKEN_SIGNATURE,
       MONGO_URI,
+      KAFKA_CLIENT_ID,
       TOTP_AUTHENTICATOR_SECRET,
+      KAFKA_BROKERS,
     } = process.env;
 
     if (
@@ -19,7 +34,9 @@ class Server {
       !JWT_REFRESH_TOKEN_SIGNATURE ||
       !JWT_OTP_TOKEN_SIGNATURE ||
       !MONGO_URI ||
-      !TOTP_AUTHENTICATOR_SECRET
+      !TOTP_AUTHENTICATOR_SECRET ||
+      !KAFKA_BROKERS ||
+      !KAFKA_CLIENT_ID
     ) {
       throw new BadRequestError('Some Env variables are missing!');
     }
@@ -32,12 +49,17 @@ class Server {
 
     const port = parseInt(PORT!, 10) || 5000;
 
-    // await natsService.connect(
-    //   process.env.NATS_CLUSTER_ID!,
-    //   process.env.NATS_CLIENT_ID!,
-    //   process.env.NATS_URL!
-    // );
-    // natsService.disconnect();
+    await kafkaService.init({
+      clientId: process.env.KAFKA_CLIENT_ID,
+      brokers: [process.env.KAFKA_BROKERS],
+    });
+
+    // new BoardCreatedConsumer(kafkaService.client).listen();
+    // new BoardDeletedConsumer(kafkaService.client).listen();
+    // new AccountUpdatedConsumer(kafkaService.client).listen();
+    // new BoardViewedConsumer(kafkaService.client).listen();
+    // new NewActionConsumer(kafkaService.client).listen();
+    new WorkspaceCreatedConsumer(kafkaService.client).listen();
 
     await Database.connect({ dbName: 'auth', uri: process.env.MONGO_URI });
     app.listen(port, () => {

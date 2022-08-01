@@ -1,3 +1,5 @@
+import * as jwt from 'jsonwebtoken';
+import isEmail from 'validator/lib/isEmail';
 import { Response, NextFunction, Request } from 'express';
 import { body, oneOf, check } from 'express-validator';
 import {
@@ -11,8 +13,6 @@ import { AuthService } from '../services/auth';
 import { IUserDocument } from '../models/User';
 import { allowedOrigins } from '../utils/constants';
 import { TokenService, PasswordManager } from '../services';
-import isEmail from 'validator/lib/isEmail';
-import * as jwt from 'jsonwebtoken';
 import { getSignatureKey } from '../helpers';
 
 declare global {

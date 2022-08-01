@@ -49,7 +49,7 @@ export interface IAccountFields {
   email?: string;
 }
 
-export enum Subjects {
+export enum KafkaTopics {
   AccountCreated = 'account:created',
   AccountDeleted = 'account:deleted',
   AccountUpdated = 'account:updated',
@@ -289,4 +289,9 @@ export interface IEventUserData {
   firstName?: string;
   lastName?: string;
   verified?: boolean;
+}
+
+export interface IKafkaInitConfig {
+  clientId: string;
+  brokers: string[];
 }

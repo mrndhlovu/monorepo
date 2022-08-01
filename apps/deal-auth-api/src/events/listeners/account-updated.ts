@@ -1,31 +1,29 @@
-import { Message } from 'node-nats-streaming';
-
 import {
-  Listener,
-  Subjects,
+  Consumer,
+  KafkaTopics,
   queueGroupNames,
   IAccountUpdatedEvent,
 } from '@loxodonta/deal-apis/shared-utils';
 import { User } from '../../models/User';
 
-export class AccountUpdatedListener extends Listener<IAccountUpdatedEvent> {
-  readonly subject: Subjects.AccountUpdated = Subjects.AccountUpdated;
+export class AccountUpdatedConsumer extends Consumer<IAccountUpdatedEvent> {
+  readonly topic: KafkaTopics.AccountUpdated = KafkaTopics.AccountUpdated;
   queueGroupName = queueGroupNames.AUTH_QUEUE_GROUP;
 
-  async onMessage(data: IAccountUpdatedEvent['data'], msg: Message) {
+  async handleEachMessage(data: IAccountUpdatedEvent['data']) {
     console.log('Event data ', data);
 
-    const user = await User.findOneAndUpdate(
-      { _id: data.id },
-      {
-        $set: {
-          account: { ...data },
-        },
-      }
-    );
+    data.forEach(async (msg) => {
+      const user = await User.findOneAndUpdate(
+        { _id: msg.id },
+        {
+          $set: {
+            account: { ...msg },
+          },
+        }
+      );
 
-    await user!?.save();
-
-    msg.ack();
+      await user!?.save();
+    });
   }
 }

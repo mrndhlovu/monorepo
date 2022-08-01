@@ -1,6 +1,6 @@
-import { IEventUserData, Subjects } from "../../types"
+import { IEventUserData, KafkaTopics } from '../../types';
 
 export interface IUserVerifiedEvent {
-  subject: Subjects.UserVerified
-  data: IEventUserData
+  topic: KafkaTopics.UserVerified;
+  data: IEventUserData[];
 }

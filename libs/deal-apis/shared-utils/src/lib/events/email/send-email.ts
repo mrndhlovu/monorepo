@@ -1,13 +1,15 @@
-import { Subjects } from "../../types"
+import { KafkaTopics } from '../../types';
 
 export interface IEmailEvent {
-  subject: Subjects.Email
-  data: {
-    body?: string
-    cc?: string
-    email: string
-    from: string
-    subject: string
-    html?: string
-  }
+  topic: KafkaTopics.Email;
+  data: [
+    {
+      body?: string;
+      cc?: string;
+      email: string;
+      from: string;
+      subject: string;
+      html?: string;
+    }
+  ];
 }

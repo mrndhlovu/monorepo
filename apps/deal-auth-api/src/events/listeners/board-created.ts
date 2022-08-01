@@ -1,27 +1,25 @@
-import { Message } from 'node-nats-streaming';
-
 import {
   IBoardCreatedEvent,
-  Listener,
-  Subjects,
+  Consumer,
+  KafkaTopics,
   queueGroupNames,
 } from '@loxodonta/deal-apis/shared-utils';
 import { User } from '../../models/User';
 
-export class BoardCreatedListener extends Listener<IBoardCreatedEvent> {
-  readonly subject: Subjects.BoardCreated = Subjects.BoardCreated;
+export class BoardCreatedConsumer extends Consumer<IBoardCreatedEvent> {
+  readonly topic: KafkaTopics.BoardCreated = KafkaTopics.BoardCreated;
   queueGroupName = queueGroupNames.BOARDS_QUEUE_GROUP;
 
-  async onMessage(data: IBoardCreatedEvent['data'], msg: Message) {
+  async handleEachMessage(data: IBoardCreatedEvent['data']) {
     console.log('Event data ', data);
 
-    const user = await User.findOneAndUpdate(
-      { _id: data.ownerId },
-      { $push: { boardIds: data.id } }
-    );
+    data.forEach(async (msg) => {
+      const user = await User.findOneAndUpdate(
+        { _id: msg.ownerId },
+        { $push: { boardIds: msg.id } }
+      );
 
-    await user!?.save();
-
-    msg.ack();
+      await user!?.save();
+    });
   }
 }

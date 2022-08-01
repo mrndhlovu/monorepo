@@ -46,6 +46,9 @@
             "command": "nx run deal-auth-api:serve"
           },
           {
+            "command": "nx run deal-accounts-api:serve"
+          },
+          {
             "command": "nx run deal-client:serve --port=3001"
           }
         ]

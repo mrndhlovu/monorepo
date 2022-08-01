@@ -1,9 +1,9 @@
-import { Subjects } from "../../types"
+import { KafkaTopics } from '../../types';
 
 export interface IListDeletedEvent {
-  subject: Subjects.ListDeleted
+  topic: KafkaTopics.ListDeleted;
   data: {
-    id: string
-    boardId: string
-  }
+    id: string;
+    boardId: string;
+  };
 }
