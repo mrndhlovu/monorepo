@@ -12,11 +12,21 @@
     "module": "esnext",
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
+    "esModuleInterop": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@loxodonta/tusks-auth-api/util-interfaces": [
-        "libs/tusks-auth-api/util-interfaces/src/index.ts"
+      "@loxodonta/api": ["libs/api/src/index.ts"],
+      "@loxodonta/api-services/db": ["libs/api-services/db/src/index.ts"],
+      "@loxodonta/api-shared": ["libs/api-shared/src/index.ts"],
+      "@loxodonta/tusks-api-shared": ["libs/tusks-api-shared/src/index.ts"],
+      "@loxodonta/tusks-apis": ["libs/tusks-apis/src/index.ts"],
+      "@loxodonta/tusks-apis/interfaces": [
+        "libs/tusks-apis/interfaces/src/index.ts"
+      ],
+      "@loxodonta/tusks-apis/shared": ["libs/tusks-apis/shared/src/index.ts"],
+      "@loxodonta/tusks-apis/shared-utils": [
+        "libs/tusks-apis/shared-utils/src/index.ts"
       ],
       "@loxodonta/tusks-client/components": [
         "libs/tusks-client/components/src/index.ts"

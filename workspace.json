@@ -2,8 +2,9 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "tusks-apis": "libs/tusks-apis",
+    "tusks-apis-shared-utils": "libs/tusks-apis/shared-utils",
     "tusks-auth-api": "apps/tusks-auth-api",
-    "tusks-auth-api-util-interfaces": "libs/tusks-auth-api/util-interfaces",
     "tusks-client": "apps/tusks-client",
     "tusks-client-components": "libs/tusks-client/components",
     "tusks-client-e2e": "apps/tusks-client-e2e",

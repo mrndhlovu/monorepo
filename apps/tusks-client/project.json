@@ -43,10 +43,10 @@
       "options": {
         "commands": [
           {
-            "command": "nx run tusks-auth-api:serve --port=5000"
+            "command": "nx run tusks-auth-api:serve"
           },
           {
-            "command": "nx run tusks-client:serve --port=3000"
+            "command": "nx run tusks-client:serve --port=3001"
           }
         ]
       }

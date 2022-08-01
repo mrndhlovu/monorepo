@@ -1,18 +1,56 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
+import { BadRequestError, Database } from '@loxodonta/tusks-apis/shared-utils';
 
-import * as express from 'express';
+import app from './app';
 
-const app = express();
+class Server {
+  private static validateEnvVariables() {
+    const {
+      PORT,
+      JWT_ACCESS_TOKEN_SIGNATURE,
+      JWT_REFRESH_TOKEN_SIGNATURE,
+      JWT_OTP_TOKEN_SIGNATURE,
+      MONGO_URI,
+      TOTP_AUTHENTICATOR_SECRET,
+    } = process.env;
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to tusks-auth-api!' });
-});
+    if (
+      !PORT ||
+      !JWT_ACCESS_TOKEN_SIGNATURE ||
+      !JWT_REFRESH_TOKEN_SIGNATURE ||
+      !JWT_OTP_TOKEN_SIGNATURE ||
+      !MONGO_URI ||
+      !TOTP_AUTHENTICATOR_SECRET
+    ) {
+      throw new BadRequestError('Some Env variables are missing!');
+    }
+  }
 
-const port = process.env.port || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
-});
-server.on('error', console.error);
+  static async start() {
+    Server.validateEnvVariables();
+
+    const { NODE_ENV, PORT } = process.env;
+
+    const port = parseInt(PORT!, 10) || 5000;
+
+    // await natsService.connect(
+    //   process.env.NATS_CLUSTER_ID!,
+    //   process.env.NATS_CLIENT_ID!,
+    //   process.env.NATS_URL!
+    // );
+    // natsService.disconnect();
+
+    await Database.connect({ dbName: 'auth', uri: process.env.MONGO_URI });
+    app.listen(port, () => {
+      const serverStatus = [
+        {
+          'Server Status': 'Online',
+          Environment: NODE_ENV!,
+          Port: port,
+        },
+      ];
+      console.table(serverStatus);
+    });
+  }
+}
+
+Server.start();
