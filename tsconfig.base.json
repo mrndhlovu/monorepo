@@ -19,26 +19,26 @@
       "@loxodonta/api": ["libs/api/src/index.ts"],
       "@loxodonta/api-services/db": ["libs/api-services/db/src/index.ts"],
       "@loxodonta/api-shared": ["libs/api-shared/src/index.ts"],
-      "@loxodonta/tusks-api-shared": ["libs/tusks-api-shared/src/index.ts"],
-      "@loxodonta/tusks-apis": ["libs/tusks-apis/src/index.ts"],
-      "@loxodonta/tusks-apis/interfaces": [
-        "libs/tusks-apis/interfaces/src/index.ts"
+      "@loxodonta/deal-api-shared": ["libs/deal-api-shared/src/index.ts"],
+      "@loxodonta/deal-apis": ["libs/deal-apis/src/index.ts"],
+      "@loxodonta/deal-apis/interfaces": [
+        "libs/deal-apis/interfaces/src/index.ts"
       ],
-      "@loxodonta/tusks-apis/shared": ["libs/tusks-apis/shared/src/index.ts"],
-      "@loxodonta/tusks-apis/shared-utils": [
-        "libs/tusks-apis/shared-utils/src/index.ts"
+      "@loxodonta/deal-apis/shared": ["libs/deal-apis/shared/src/index.ts"],
+      "@loxodonta/deal-apis/shared-utils": [
+        "libs/deal-apis/shared-utils/src/index.ts"
       ],
-      "@loxodonta/tusks-client/components": [
-        "libs/tusks-client/components/src/index.ts"
+      "@loxodonta/deal-client/components": [
+        "libs/deal-client/components/src/index.ts"
       ],
-      "@loxodonta/tusks-client/tusks-components": [
-        "libs/tusks-client/tusks-components/src/index.ts"
+      "@loxodonta/deal-client/deal-components": [
+        "libs/deal-client/deal-components/src/index.ts"
       ],
-      "@loxodonta/tusks-client/ui-shared": [
-        "libs/tusks-client/ui-shared/src/index.ts"
+      "@loxodonta/deal-client/ui-shared": [
+        "libs/deal-client/ui-shared/src/index.ts"
       ],
-      "@loxodonta/tusks-client/utils": ["libs/tusks-client/utils/src/index.ts"],
-      "@loxodonta/tusks-components": ["libs/tusks-components/src/index.ts"]
+      "@loxodonta/deal-client/utils": ["libs/deal-client/utils/src/index.ts"],
+      "@loxodonta/deal-components": ["libs/deal-components/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

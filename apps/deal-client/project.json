@@ -1,0 +1,71 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/deal-client",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "root": "apps/deal-client",
+        "outputPath": "dist/apps/deal-client"
+      },
+      "configurations": {
+        "development": {
+          "outputPath": "tmp/apps/deal-client"
+        },
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "deal-client:build",
+        "dev": true,
+        "proxyConfig": "apps/deal-client/proxy.conf.json"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "deal-client:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "deal-client:build:production",
+          "dev": false
+        }
+      }
+    },
+    "serve-client-apis": {
+      "executor": "@nrwl/workspace:run-commands",
+
+      "options": {
+        "commands": [
+          {
+            "command": "nx run deal-auth-api:serve"
+          },
+          {
+            "command": "nx run deal-client:serve --port=3001"
+          }
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/deal-client"],
+      "options": {
+        "jestConfig": "apps/deal-client/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/deal-client/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  },
+  "tags": []
+}

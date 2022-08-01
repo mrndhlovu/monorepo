@@ -2,14 +2,14 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "tusks-apis": "libs/tusks-apis",
-    "tusks-apis-shared-utils": "libs/tusks-apis/shared-utils",
-    "tusks-auth-api": "apps/tusks-auth-api",
-    "tusks-client": "apps/tusks-client",
-    "tusks-client-components": "libs/tusks-client/components",
-    "tusks-client-e2e": "apps/tusks-client-e2e",
-    "tusks-client-ui-shared": "libs/tusks-client/ui-shared",
-    "tusks-client-ui-shared-e2e": "apps/tusks-client-ui-shared-e2e",
-    "tusks-client-utils": "libs/tusks-client/utils"
+    "deal-apis": "libs/deal-apis",
+    "deal-apis-shared-utils": "libs/deal-apis/shared-utils",
+    "deal-auth-api": "apps/deal-auth-api",
+    "deal-client": "apps/deal-client",
+    "deal-client-components": "libs/deal-client/components",
+    "deal-client-e2e": "apps/deal-client-e2e",
+    "deal-client-ui-shared": "libs/deal-client/ui-shared",
+    "deal-client-ui-shared-e2e": "apps/deal-client-ui-shared-e2e",
+    "deal-client-utils": "libs/deal-client/utils"
   }
 }
