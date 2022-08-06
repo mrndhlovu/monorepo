@@ -52,6 +52,9 @@
             "command": "nx run deal-payments-api:serve"
           },
           {
+            "command": "nx run email-service:serve"
+          },
+          {
             "command": "nx run deal-client:serve --port=3001"
           }
         ]
