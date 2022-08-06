@@ -1,12 +1,12 @@
 import { KafkaTopics } from '../types';
 import { Kafka, ProducerRecord } from 'kafkajs';
 
-interface IEvent {
+interface IKafkaEvent {
   topic: KafkaTopics;
-  data: unknown[];
+  data: unknown;
 }
 
-export abstract class Producer<T extends IEvent> {
+export abstract class Producer<T extends IKafkaEvent> {
   abstract topic: T['topic'];
   private client: Kafka;
 
@@ -23,7 +23,9 @@ export abstract class Producer<T extends IEvent> {
 
       await producer.send({
         topic: this.topic,
-        messages: data,
+        messages: Array.isArray(data)
+          ? data
+          : [{ value: JSON.stringify(data) }],
       } as ProducerRecord);
 
       console.log('Sent Successfully!');

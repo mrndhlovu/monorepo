@@ -10,20 +10,21 @@ export class AccountUpdatedConsumer extends Consumer<IAccountUpdatedEvent> {
   readonly topic: KafkaTopics.AccountUpdated = KafkaTopics.AccountUpdated;
   queueGroupName = queueGroupNames.AUTH_QUEUE_GROUP;
 
-  async handleEachMessage(data: IAccountUpdatedEvent['data']) {
-    console.log('Event data ', data);
+  async handleEachMessage({ message }) {
+    const data = this.serialiseData<IAccountUpdatedEvent['data']>(
+      message.value
+    );
+    console.log('Event data ', data, message.value);
 
-    data.forEach(async (msg) => {
-      const user = await User.findOneAndUpdate(
-        { _id: msg.id },
-        {
-          $set: {
-            account: { ...msg },
-          },
-        }
-      );
+    const user = await User.findOneAndUpdate(
+      { _id: data.id },
+      {
+        $set: {
+          account: { ...data },
+        },
+      }
+    );
 
-      await user!?.save();
-    });
+    await user!?.save();
   }
 }

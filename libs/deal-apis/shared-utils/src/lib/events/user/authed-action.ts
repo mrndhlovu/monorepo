@@ -8,12 +8,10 @@ interface UserData extends IEventUserData {
 
 export interface IAuthedActionEvent {
   topic: KafkaTopics.AuthedAction;
-  data: [
-    {
-      actionKey: string;
-      entities: { [key: string]: any };
-      type: ACTION_TYPES;
-      user: UserData;
-    }
-  ];
+  data: {
+    actionKey: string;
+    entities: { [key: string]: any };
+    type: ACTION_TYPES;
+    user: UserData;
+  };
 }

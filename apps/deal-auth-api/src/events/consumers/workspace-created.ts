@@ -10,20 +10,22 @@ export class WorkspaceCreatedConsumer extends Consumer<IWorkspaceCreatedEvent> {
   readonly topic: KafkaTopics.WorkspaceCreated = KafkaTopics.WorkspaceCreated;
   queueGroupName = queueGroupNames.AUTH_QUEUE_GROUP;
 
-  async handleEachMessage(data: IWorkspaceCreatedEvent['data']) {
+  async handleEachMessage({ message }) {
+    const data = this.serialiseData<IWorkspaceCreatedEvent['data']>(
+      message.value
+    );
+
     console.log('Event data ', data);
 
-    data.forEach(async (msg) => {
-      const user = await User.findOneAndUpdate(
-        { _id: msg.ownerId },
-        {
-          $push: {
-            workspaces: msg.id,
-          },
-        }
-      );
+    const user = await User.findOneAndUpdate(
+      { _id: data.ownerId },
+      {
+        $push: {
+          workspaces: data.id,
+        },
+      }
+    );
 
-      await user!?.save();
-    });
+    await user!?.save();
   }
 }

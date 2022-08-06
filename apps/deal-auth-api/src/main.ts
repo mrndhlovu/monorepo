@@ -11,7 +11,7 @@ import {
   NewActionConsumer,
   BoardViewedConsumer,
   WorkspaceCreatedConsumer,
-} from './events/listeners/index';
+} from './events/consumers/index';
 
 import app from './app';
 
@@ -42,6 +42,20 @@ class Server {
     }
   }
 
+  private static async connectEventBus() {
+    await kafkaService.init({
+      clientId: process.env.KAFKA_CLIENT_ID,
+      brokers: [process.env.KAFKA_BROKERS],
+    });
+
+    await new BoardCreatedConsumer(kafkaService.client).listen();
+    await new BoardDeletedConsumer(kafkaService.client).listen();
+    await new AccountUpdatedConsumer(kafkaService.client).listen();
+    await new BoardViewedConsumer(kafkaService.client).listen();
+    await new WorkspaceCreatedConsumer(kafkaService.client).listen();
+    await new NewActionConsumer(kafkaService.client).listen();
+  }
+
   static async start() {
     Server.validateEnvVariables();
 
@@ -49,17 +63,7 @@ class Server {
 
     const port = parseInt(PORT!, 10) || 5000;
 
-    await kafkaService.init({
-      clientId: process.env.KAFKA_CLIENT_ID,
-      brokers: [process.env.KAFKA_BROKERS],
-    });
-
-    // new BoardCreatedConsumer(kafkaService.client).listen();
-    // new BoardDeletedConsumer(kafkaService.client).listen();
-    // new AccountUpdatedConsumer(kafkaService.client).listen();
-    // new BoardViewedConsumer(kafkaService.client).listen();
-    // new NewActionConsumer(kafkaService.client).listen();
-    new WorkspaceCreatedConsumer(kafkaService.client).listen();
+    Server.connectEventBus();
 
     await Database.connect({ dbName: 'auth', uri: process.env.MONGO_URI });
     app.listen(port, () => {

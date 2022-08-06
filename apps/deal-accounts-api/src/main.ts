@@ -1,6 +1,17 @@
-import { BadRequestError, Database } from '@loxodonta/deal-apis/shared-utils';
+import {
+  BadRequestError,
+  Database,
+  kafkaService,
+} from '@loxodonta/deal-apis/shared-utils';
 
 import app from './app';
+import {
+  AuthActionListener,
+  NotificationCreatedConsumer,
+  PaymentCreatedConsumer,
+  UserDeletedConsumer,
+  UserVerifiedConsumer,
+} from './events/listeners';
 
 class Server {
   private loadEnvVariables() {
@@ -10,6 +21,8 @@ class Server {
       SPOTIFY_REDIRECT_URI,
       SPOTIFY_SECRET,
       SPOTIFY_ID,
+      KAFKA_CLIENT_ID,
+      KAFKA_BROKERS,
     } = process.env;
 
     if (
@@ -17,21 +30,25 @@ class Server {
       !MONGO_URI ||
       !SPOTIFY_ID ||
       !SPOTIFY_REDIRECT_URI ||
-      !SPOTIFY_SECRET
+      !SPOTIFY_SECRET ||
+      !KAFKA_BROKERS ||
+      !KAFKA_CLIENT_ID
     ) {
       throw new BadRequestError('Some Env variables are missing!');
     }
   }
 
   private async connectEventBus() {
-    //   const { NATS_CLUSTER_ID, NATS_CLIENT_ID, NATS_URL } = process.env;
-    //   await natsService.connect(NATS_CLUSTER_ID!, NATS_CLIENT_ID!, NATS_URL!);
-    //   natsService.handleOnclose();
-    //   new UserDeletedConsumer (natsService.client).listen();
-    //   new UserVerifiedConsumer (natsService.client).listen();
-    //   new PaymentCreatedConsumer (natsService.client).listen();
-    //   new AuthActionListener(natsService.client).listen();
-    //   new NotificationCreatedConsumer (natsService.client).listen();
+    await kafkaService.init({
+      clientId: process.env.KAFKA_CLIENT_ID,
+      brokers: [process.env.KAFKA_BROKERS],
+    });
+
+    await new UserDeletedConsumer(kafkaService.client).listen();
+    await new UserVerifiedConsumer(kafkaService.client).listen();
+    await new PaymentCreatedConsumer(kafkaService.client).listen();
+    await new AuthActionListener(kafkaService.client).listen();
+    await new NotificationCreatedConsumer(kafkaService.client).listen();
   }
 
   async start() {

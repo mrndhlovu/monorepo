@@ -6,5 +6,8 @@
     "types": ["node", "express"]
   },
   "exclude": ["jest.config.ts", "**/*.spec.ts", "**/*.test.ts"],
-  "include": ["**/*.ts"]
+  "include": [
+    "**/*.ts",
+    "../../libs/deal-apis/shared-utils/src/lib/events/account/account-updated.ts"
+  ]
 }

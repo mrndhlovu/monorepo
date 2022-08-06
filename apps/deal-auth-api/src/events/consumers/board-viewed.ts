@@ -10,16 +10,16 @@ export class BoardViewedConsumer extends Consumer<IBoardViewedEvent> {
   readonly topic: KafkaTopics.BoardViewed = KafkaTopics.BoardViewed;
   queueGroupName = queueGroupNames.AUTH_QUEUE_GROUP;
 
-  async handleEachMessage(data: IBoardViewedEvent['data']) {
-    data.forEach(async (msg) => {
-      const user = await User.findOneAndUpdate(
-        { _id: msg.userId },
-        { $push: { viewedRecent: { $each: [msg.boardId] } } }
-      );
+  async handleEachMessage({ message }) {
+    const data = this.serialiseData<IBoardViewedEvent['data']>(message.value);
 
-      if (user) {
-        await user!?.save();
-      }
-    });
+    const user = await User.findOneAndUpdate(
+      { _id: data.userId },
+      { $push: { viewedRecent: { $each: [data.boardId] } } }
+    );
+
+    if (user) {
+      await user!?.save();
+    }
   }
 }

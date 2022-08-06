@@ -17,31 +17,30 @@ export class UserVerifiedConsumer extends Consumer<IUserVerifiedEvent> {
   readonly topic: KafkaTopics.UserVerified = KafkaTopics.UserVerified;
   queueGroupName = queueGroupNames.ACCOUNT_QUEUE_GROUP;
 
-  handleEachMessage = async (data: IUserVerifiedEvent['data']) => {
-    console.log('Event data >>', data);
+  handleEachMessage = async ({ message }) => {
+    const data = this.serialiseData<IUserVerifiedEvent['data']>(message.value);
+    console.log('Event data >>', data, message);
 
-    data.forEach(async (msg) => {
-      const account = new Account({
-        _id: msg.id,
-        status: AccountStatus.Active,
-        email: msg.email,
-        isVerified: msg.verified,
-      });
-
-      const notification = new Notification({
-        isRead: false,
-        body: 'New account created successfully',
-        subject: 'New account created successfully',
-        title: 'New account created successfully',
-        user: { id: msg.id },
-        actionKey: 'new:user',
-      });
-
-      await account.save();
-      await notification.save();
-      const eventData = accountService.getEventData(account);
-
-      new AccountUpdatedPublisher(kafkaService.client).publish(eventData);
+    const account = new Account({
+      _id: data.id,
+      status: AccountStatus.Active,
+      email: data.email,
+      isVerified: data.verified,
     });
+
+    const notification = new Notification({
+      isRead: false,
+      body: 'New account created successfully',
+      subject: 'New account created successfully',
+      title: 'New account created successfully',
+      user: { id: data.id },
+      actionKey: 'new:user',
+    });
+
+    await account.save();
+    await notification.save();
+    const eventData = accountService.getEventData(account);
+
+    new AccountUpdatedPublisher(kafkaService.client).publish(eventData);
   };
 }

@@ -10,16 +10,15 @@ export class BoardCreatedConsumer extends Consumer<IBoardCreatedEvent> {
   readonly topic: KafkaTopics.BoardCreated = KafkaTopics.BoardCreated;
   queueGroupName = queueGroupNames.BOARDS_QUEUE_GROUP;
 
-  async handleEachMessage(data: IBoardCreatedEvent['data']) {
+  async handleEachMessage({ message }) {
+    const data = this.serialiseData<IBoardCreatedEvent['data']>(message.value);
     console.log('Event data ', data);
 
-    data.forEach(async (msg) => {
-      const user = await User.findOneAndUpdate(
-        { _id: msg.ownerId },
-        { $push: { boardIds: msg.id } }
-      );
+    const user = await User.findOneAndUpdate(
+      { _id: data.ownerId },
+      { $push: { boardIds: data.id } }
+    );
 
-      await user!?.save();
-    });
+    await user!?.save();
   }
 }

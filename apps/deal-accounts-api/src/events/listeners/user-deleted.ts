@@ -12,21 +12,20 @@ export class UserDeletedConsumer extends Consumer<IUserDeletedEvent> {
   readonly topic: KafkaTopics.UserDeleted = KafkaTopics.UserDeleted;
   queueGroupName = queueGroupNames.ACCOUNT_QUEUE_GROUP;
 
-  handleEachMessage = async (data: IUserDeletedEvent['data']) => {
+  handleEachMessage = async ({ message }) => {
+    const data = this.serialiseData<IUserDeletedEvent['data']>(message.value);
     console.log('Event data ', data);
 
     try {
-      data.forEach(async (msg) => {
-        const account = await Account.findOne({ _id: msg.id });
+      const account = await Account.findOne({ _id: data.id });
 
-        if (account) {
-          const eventData = { email: msg.email, userId: account._id };
+      if (account) {
+        const eventData = { email: data.email, userId: account._id };
 
-          await account.delete();
+        await account.delete();
 
-          new AccountDeletedPublisher(kafkaService.client).publish([eventData]);
-        }
-      });
+        new AccountDeletedPublisher(kafkaService.client).publish(eventData);
+      }
     } catch (error) {
       return error;
     }

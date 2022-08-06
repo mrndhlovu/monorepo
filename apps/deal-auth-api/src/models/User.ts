@@ -156,7 +156,7 @@ export interface IUserDocument extends Document {
   initials?: string;
   lastName?: string;
   password?: string;
-  account: IAccountCreatedEvent['data'][0];
+  account: IAccountCreatedEvent['data'];
   boardIds: string[];
   workspaces: string[];
   roles: IUseBoardRoles[];

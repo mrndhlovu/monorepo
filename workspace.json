@@ -11,6 +11,7 @@
     "deal-client-e2e": "apps/deal-client-e2e",
     "deal-client-ui-shared": "libs/deal-client/ui-shared",
     "deal-client-ui-shared-e2e": "apps/deal-client-ui-shared-e2e",
-    "deal-client-utils": "libs/deal-client/utils"
+    "deal-client-utils": "libs/deal-client/utils",
+    "deal-payments-api": "apps/deal-payments-api"
   }
 }

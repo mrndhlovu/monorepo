@@ -4,6 +4,6 @@ import {
   KafkaTopics,
 } from '@loxodonta/deal-apis/shared-utils';
 
-export class UserVerifiedPublisher extends Producer<IUserVerifiedEvent> {
+export class UserVerifiedProducer extends Producer<IUserVerifiedEvent> {
   topic: KafkaTopics.UserVerified = KafkaTopics.UserVerified;
 }

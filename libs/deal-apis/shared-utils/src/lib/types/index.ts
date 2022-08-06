@@ -50,44 +50,44 @@ export interface IAccountFields {
 }
 
 export enum KafkaTopics {
-  AccountCreated = 'account:created',
-  AccountDeleted = 'account:deleted',
-  AccountUpdated = 'account:updated',
+  AccountCreated = 'account-created',
+  AccountDeleted = 'account-deleted',
+  AccountUpdated = 'account-updated',
 
-  CustomerCreated = 'customer:created',
-  CustomerDeleted = 'customer:deleted',
+  CustomerCreated = 'customer-created',
+  CustomerDeleted = 'customer-deleted',
 
-  UserCreated = 'user:created',
-  UserUpdated = 'user:updated',
-  UserDeleted = 'user:deleted',
-  GetUser = 'user:request',
-  UserVerified = 'user:verified',
+  UserCreated = 'user-created',
+  UserUpdated = 'user-updated',
+  UserDeleted = 'user-deleted',
+  GetUser = 'user-request',
+  UserVerified = 'user-verified',
 
-  BoardCreated = 'board:created',
-  BoardDeleted = 'board:deleted',
-  BoardUpdated = 'board:updated',
-  BoardViewed = 'board:viewed',
-  GetBoardById = 'board:by:id',
-  GetBoards = 'boards:list',
+  BoardCreated = 'board-created',
+  BoardDeleted = 'board-deleted',
+  BoardUpdated = 'board-updated',
+  BoardViewed = 'board-viewed',
+  GetBoardById = 'board-by-id',
+  GetBoards = 'boards-list',
 
-  ListCreated = 'list:created',
-  ListUpdated = 'list:updated',
-  ListDeleted = 'list:deleted',
+  ListCreated = 'list-created',
+  ListUpdated = 'list-updated',
+  ListDeleted = 'list-deleted',
 
-  NewAction = 'action:new',
-  AuthedAction = 'action:authenticated',
+  NewAction = 'action-new',
+  AuthedAction = 'action-authenticated',
 
-  Card = 'card:created',
-  CardUpdated = 'card:updated',
+  Card = 'card-created',
+  CardUpdated = 'card-updated',
 
-  PaymentCreated = 'payments:created',
-  PaymentFailed = 'payments:failed',
+  PaymentCreated = 'payments-created',
+  PaymentFailed = 'payments-failed',
 
-  Email = 'send:email',
-  CreateNotification = 'create:notification',
+  Email = 'send-email',
+  CreateNotification = 'create-notification',
 
-  WorkspaceCreated = 'workspace:created',
-  WorkspaceUpdated = 'workspace:updated',
+  WorkspaceCreated = 'workspace-created',
+  WorkspaceUpdated = 'workspace-updated',
 }
 
 export enum ACTION_KEYS {

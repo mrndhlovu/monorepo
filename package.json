@@ -17,6 +17,7 @@
     "cookie-session": "^2.0.0",
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
+    "date-fns": "^2.29.1",
     "evergreen-ui": "^6.10.3",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
@@ -34,6 +35,7 @@
     "react-icons": "^4.4.0",
     "regenerator-runtime": "0.13.7",
     "spotify-web-api-node": "^5.0.2",
+    "stripe": "^10.0.0",
     "tslib": "^2.3.0",
     "validator": "^13.7.0"
   },

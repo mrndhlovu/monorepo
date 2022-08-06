@@ -15,42 +15,41 @@ export class AuthActionListener extends Consumer<IAuthedActionEvent> {
   readonly topic: KafkaTopics.AuthedAction = KafkaTopics.AuthedAction;
   queueGroupName = queueGroupNames.AUTH_ACTION_QUEUE_GROUP;
 
-  async handleEachMessage(data: IAuthedActionEvent['data']) {
+  async handleEachMessage({ message }) {
+    const data = this.serialiseData<IAuthedActionEvent['data']>(message.value);
     console.log(data);
 
-    data.forEach(async (msg) => {
-      if (msg.actionKey === ACTION_KEYS.REMOVE_CARD_ATTACHMENT) {
-        const action = await Action.findOne({
-          'entities.attachment.id': msg.entities?.attachment.id,
-        });
-
-        if (action) {
-          await action.delete();
-        }
-      }
-      const action = new Action({
-        type: msg.type,
-        memberCreator: msg.user,
-        translationKey: msg.actionKey,
-        entities: msg.entities,
+    if (data.actionKey === ACTION_KEYS.REMOVE_CARD_ATTACHMENT) {
+      const action = await Action.findOne({
+        'entities.attachment.id': data.entities?.attachment.id,
       });
 
-      const notificationContext = getNotificationContext(msg.actionKey);
-
-      if (notificationContext.body) {
-        const notification = new Notification({
-          isRead: false,
-          body: notificationContext.body,
-          subject: notificationContext.subject!,
-          title: notificationContext.title!,
-          user: { id: msg.user.id!, initials: msg.user.initials! },
-          actionKey: msg.actionKey,
-        });
-
-        await notification.save();
+      if (action) {
+        await action.delete();
       }
-
-      await action.save();
+    }
+    const action = new Action({
+      type: data.type,
+      memberCreator: data.user,
+      translationKey: data.actionKey,
+      entities: data.entities,
     });
+
+    const notificationContext = getNotificationContext(data.actionKey);
+
+    if (notificationContext.body) {
+      const notification = new Notification({
+        isRead: false,
+        body: notificationContext.body,
+        subject: notificationContext.subject!,
+        title: notificationContext.title!,
+        user: { id: data.user.id!, initials: data.user.initials! },
+        actionKey: data.actionKey,
+      });
+
+      await notification.save();
+    }
+
+    await action.save();
   }
 }

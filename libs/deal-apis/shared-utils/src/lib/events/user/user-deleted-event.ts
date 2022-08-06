@@ -7,5 +7,5 @@ interface UserData extends IEventUserData {
 
 export interface IUserDeletedEvent {
   topic: KafkaTopics.UserDeleted;
-  data: UserData[];
+  data: UserData;
 }

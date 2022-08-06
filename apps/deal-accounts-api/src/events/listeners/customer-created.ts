@@ -17,24 +17,23 @@ export class CustomerCreatedListener extends Consumer<ICustomerCreated> {
   readonly topic: KafkaTopics.CustomerCreated = KafkaTopics.CustomerCreated;
   queueGroupName = queueGroupNames.PAYMENTS_QUEUE_GROUP;
 
-  handleEachMessage = async (data: ICustomerCreated['data']) => {
+  handleEachMessage = async ({ message }) => {
+    const data = this.serialiseData<ICustomerCreated['data']>(message.value);
     console.log('Event data ', data);
 
     try {
-      data.forEach(async (option) => {
-        const account = await accountService.findAccountByIdAndUpdate(
-          {
-            customerId: option.customerId,
-          },
-          option.userId
-        );
+      const account = await accountService.findAccountByIdAndUpdate(
+        {
+          customerId: data.customerId,
+        },
+        data.userId
+      );
 
-        if (account) {
-          await account.save();
-          const eventData = accountService.getEventData(account);
-          new AccountUpdatedPublisher(kafkaService.client).publish(eventData);
-        }
-      });
+      if (account) {
+        await account.save();
+        const eventData = accountService.getEventData(account);
+        new AccountUpdatedPublisher(kafkaService.client).publish(eventData);
+      }
     } catch (error) {
       return error;
     }

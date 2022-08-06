@@ -14,21 +14,22 @@ export class NotificationCreatedConsumer extends Consumer<ICreateNotificationEve
     KafkaTopics.CreateNotification;
   queueGroupName = queueGroupNames.ACCOUNT_QUEUE_GROUP;
 
-  handleEachMessage = async (data: ICreateNotificationEvent['data']) => {
+  handleEachMessage = async ({ message }) => {
+    const data = this.serialiseData<ICreateNotificationEvent['data']>(
+      message.value
+    );
     console.log('Event data ', data);
 
     try {
-      data.forEach(async (msg) => {
-        const notification = new Notification({
-          body: msg.body,
-          isRead: false,
-          subject: msg.subject,
-          actionKey: msg.actionKey,
-          user: msg.user,
-        });
-
-        await notification.save();
+      const notification = new Notification({
+        body: data.body,
+        isRead: false,
+        subject: data.subject,
+        actionKey: data.actionKey,
+        user: data.user,
       });
+
+      await notification.save();
     } catch (error) {
       return error;
     }

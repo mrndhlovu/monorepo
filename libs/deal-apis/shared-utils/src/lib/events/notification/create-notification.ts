@@ -7,17 +7,15 @@ export class CreateNotificationPublisher extends Producer<ICreateNotificationEve
 
 export interface ICreateNotificationEvent {
   topic: KafkaTopics.CreateNotification;
-  data: [
-    {
-      body: string;
-      id?: string;
-      subject: string;
-      title: string;
-      actionKey?: string;
-      user: {
-        id: string;
-        initials: string;
-      };
-    }
-  ];
+  data: {
+    body: string;
+    id?: string;
+    subject: string;
+    title: string;
+    actionKey?: string;
+    user: {
+      id: string;
+      initials: string;
+    };
+  };
 }

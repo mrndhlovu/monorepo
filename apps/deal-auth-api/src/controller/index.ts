@@ -4,6 +4,7 @@ import {
   BadRequestError,
   IJwtAccessTokens,
   IJwtAuthToken,
+  kafkaService,
   NotAuthorisedError,
   NotFoundError,
   permissionManager,
@@ -21,6 +22,7 @@ import {
 
 import { IUserDocument, User } from '../models/User';
 import { mfaService, TokenService } from '../services';
+import { UserVerifiedProducer } from '../events/producers';
 
 declare global {
   namespace Express {
@@ -75,6 +77,12 @@ class AuthController {
     };
 
     // await new SendEmailPublisher(natsService.client).publish(email);
+
+    await new UserVerifiedProducer(kafkaService.client).publish({
+      id: user.id,
+      email: user.email,
+      verified: user.isVerified,
+    });
 
     res.status(201).send({});
   };
@@ -164,7 +172,7 @@ class AuthController {
 
     await user.save();
 
-    // new UserVerifiedPublisher(natsService.client).publish({
+    // new UserVerifiedProducer(natsService.client).publish({
     //   id: user._id,
     //   email: user.email,
     //   verified: user.isVerified,

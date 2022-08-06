@@ -1,4 +1,4 @@
-import { Kafka } from 'kafkajs';
+import { EachMessagePayload, Kafka } from 'kafkajs';
 import { KafkaTopics } from '../types';
 
 interface IEvent {
@@ -7,13 +7,18 @@ interface IEvent {
 }
 
 export abstract class Consumer<T extends IEvent> {
-  abstract handleEachMessage(data: T['data']): Promise<void>;
+  abstract handleEachMessage(options: EachMessagePayload): Promise<void>;
   abstract topic: T['topic'];
   abstract queueGroupName: string;
   private client: Kafka;
 
   constructor(client: Kafka) {
     this.client = client;
+  }
+
+  serialiseData<T>(data: string) {
+    if (!data) return;
+    return JSON.parse(data) as T;
   }
 
   async listen(): Promise<void> {
@@ -36,8 +41,8 @@ export abstract class Consumer<T extends IEvent> {
       });
 
       console.log('Sent Successfully!');
-    } catch (error) {
-      console.error({ error });
+    } catch (error: any) {
+      console.error(error.message);
     }
   }
 }
