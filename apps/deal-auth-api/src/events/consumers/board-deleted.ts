@@ -1,18 +1,18 @@
 import {
   IBoardDeletedEvent,
   Consumer,
-  queueGroupNames,
+  CONSUMER_GROUPS,
   KafkaTopics,
 } from '@loxodonta/deal-apis/shared-utils';
 import { User } from '../../models/User';
 
 export class BoardDeletedConsumer extends Consumer<IBoardDeletedEvent> {
   readonly topic: KafkaTopics.BoardDeleted = KafkaTopics.BoardDeleted;
-  queueGroupName = queueGroupNames.BOARDS_QUEUE_GROUP;
+  groupId = CONSUMER_GROUPS.BOARDS;
 
   async handleEachMessage({ message }) {
-    const data = this.serialiseData<IBoardDeletedEvent['data']>(message.value);
-    console.log('Event data ', data);
+    const data = JSON.parse(message.value) as IBoardDeletedEvent['data'];
+    console.log('EVENT RECEIVED====> ', data);
 
     const user = await User.findOneAndUpdate(
       { _id: data.ownerId },

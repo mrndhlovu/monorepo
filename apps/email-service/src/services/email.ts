@@ -28,7 +28,7 @@ class EmailService {
       const response = await mgClient.messages().send(msg, (err) => {
         if (err) throw new BadRequestError(err as any);
 
-        return 200;
+        return { success: true };
       });
 
       return response;

@@ -2,7 +2,7 @@ import { Message } from 'node-nats-streaming';
 
 import {
   Consumer,
-  queueGroupNames,
+  CONSUMER_GROUPS,
   KafkaTopics,
   ICreateNotificationEvent,
 } from '@loxodonta/deal-apis/shared-utils';
@@ -12,13 +12,11 @@ import Notification from '../../models/Notification';
 export class NotificationCreatedConsumer extends Consumer<ICreateNotificationEvent> {
   readonly topic: KafkaTopics.CreateNotification =
     KafkaTopics.CreateNotification;
-  queueGroupName = queueGroupNames.ACCOUNT_QUEUE_GROUP;
+  groupId = CONSUMER_GROUPS.ACCOUNT;
 
   handleEachMessage = async ({ message }) => {
-    const data = this.serialiseData<ICreateNotificationEvent['data']>(
-      message.value
-    );
-    console.log('Event data ', data);
+    const data = JSON.parse(message.value) as ICreateNotificationEvent['data'];
+    console.log('EVENT RECEIVED====> ', data);
 
     try {
       const notification = new Notification({

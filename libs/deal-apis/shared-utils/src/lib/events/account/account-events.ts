@@ -10,6 +10,7 @@ export interface ICustomerCreated {
   data: {
     userId: string;
     customerId: string;
+    accountId: string;
   };
 }
 

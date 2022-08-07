@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document, model, ObjectId } from 'mongoose';
-
 import {
   AccountOptions,
   AccountStatus,
@@ -12,6 +11,10 @@ const AccountSchema = new Schema<IAccountDocument>(
       required: true,
       enum: Object.values(AccountOptions),
       default: AccountOptions.Free,
+    },
+    userId: {
+      type: String,
+      required: true,
     },
     expiresAt: {
       type: mongoose.Schema.Types.Date,
@@ -80,6 +83,7 @@ export interface IAccount {
   customerId: string;
   email: string;
   powerUps: ObjectId[];
+  userId: string;
 }
 
 export interface IAccountDocument extends Document, IAccount {

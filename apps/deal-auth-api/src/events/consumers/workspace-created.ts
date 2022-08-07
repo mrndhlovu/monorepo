@@ -1,21 +1,19 @@
 import {
   Consumer,
   KafkaTopics,
-  queueGroupNames,
+  CONSUMER_GROUPS,
   IWorkspaceCreatedEvent,
 } from '@loxodonta/deal-apis/shared-utils';
 import { User } from '../../models/User';
 
 export class WorkspaceCreatedConsumer extends Consumer<IWorkspaceCreatedEvent> {
   readonly topic: KafkaTopics.WorkspaceCreated = KafkaTopics.WorkspaceCreated;
-  queueGroupName = queueGroupNames.AUTH_QUEUE_GROUP;
+  groupId = CONSUMER_GROUPS.AUTH;
 
   async handleEachMessage({ message }) {
-    const data = this.serialiseData<IWorkspaceCreatedEvent['data']>(
-      message.value
-    );
+    const data = JSON.parse(message.value) as IWorkspaceCreatedEvent['data'];
 
-    console.log('Event data ', data);
+    console.log('EVENT RECEIVED====> ', data);
 
     const user = await User.findOneAndUpdate(
       { _id: data.ownerId },

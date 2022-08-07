@@ -13,14 +13,14 @@ class KafkaService {
   get topics() {
     return Object.values(KafkaTopics).map((value) => ({
       topic: value,
-      numPartitions: 2,
+      numPartitions: 3,
     }));
   }
 
-  async init({ clientId }: IKafkaInitConfig) {
+  async init() {
     try {
       this._client = new Kafka({
-        clientId,
+        clientId: process.env.KAFKA_CLIENT_ID!,
         brokers: [process.env.KAFKA_BROKERS!],
       });
 
@@ -28,12 +28,6 @@ class KafkaService {
       console.log('Connecting...');
 
       await admin.connect();
-      console.log('Connected!');
-      const topics = Object.values(KafkaTopics);
-      const topics2 = Object.keys(KafkaTopics);
-
-      // await admin.deleteTopics({ topics: topics2 });
-      // await admin.deleteTopics({ topics });
 
       await admin.createTopics({
         waitForLeaders: true,

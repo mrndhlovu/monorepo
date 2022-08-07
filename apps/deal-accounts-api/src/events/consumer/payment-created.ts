@@ -3,23 +3,21 @@ import { Message } from 'node-nats-streaming';
 import {
   IPaymentCreatedEvent,
   Consumer,
-  queueGroupNames,
+  CONSUMER_GROUPS,
   KafkaTopics,
   kafkaService,
 } from '@loxodonta/deal-apis/shared-utils';
 
-import { AccountUpdatedPublisher } from '../publishers';
+import { AccountUpdatedProducer } from '../producers';
 import { accountService } from '../../services';
 
 export class PaymentCreatedConsumer extends Consumer<IPaymentCreatedEvent> {
   readonly topic: KafkaTopics.PaymentCreated = KafkaTopics.PaymentCreated;
-  queueGroupName = queueGroupNames.PAYMENTS_QUEUE_GROUP;
+  groupId = CONSUMER_GROUPS.PAYMENTS;
 
   handleEachMessage = async ({ message }) => {
-    const data = this.serialiseData<IPaymentCreatedEvent['data']>(
-      message.value
-    );
-    console.log('Event data ', data);
+    const data = JSON.parse(message.value) as IPaymentCreatedEvent['data'];
+    console.log('EVENT RECEIVED====> ', data);
 
     try {
       const account = await accountService.findAccountByIdAndUpdate(
@@ -38,7 +36,7 @@ export class PaymentCreatedConsumer extends Consumer<IPaymentCreatedEvent> {
 
       await account.save();
 
-      new AccountUpdatedPublisher(kafkaService.client).publish(eventData);
+      await new AccountUpdatedProducer(kafkaService.client).publish(eventData);
     } catch (error) {
       return error.message;
     }

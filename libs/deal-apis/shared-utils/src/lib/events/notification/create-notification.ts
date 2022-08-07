@@ -1,7 +1,7 @@
 import { Producer } from '../../services/base-producer';
 import { KafkaTopics } from '../../types';
 
-export class CreateNotificationPublisher extends Producer<ICreateNotificationEvent> {
+export class CreateNotificationProducer extends Producer<ICreateNotificationEvent> {
   topic: KafkaTopics.CreateNotification = KafkaTopics.CreateNotification;
 }
 

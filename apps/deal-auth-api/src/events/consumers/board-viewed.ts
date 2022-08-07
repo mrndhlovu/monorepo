@@ -1,17 +1,17 @@
 import {
   Consumer,
   KafkaTopics,
-  queueGroupNames,
+  CONSUMER_GROUPS,
   IBoardViewedEvent,
 } from '@loxodonta/deal-apis/shared-utils';
 import { User } from '../../models/User';
 
 export class BoardViewedConsumer extends Consumer<IBoardViewedEvent> {
   readonly topic: KafkaTopics.BoardViewed = KafkaTopics.BoardViewed;
-  queueGroupName = queueGroupNames.AUTH_QUEUE_GROUP;
+  groupId = CONSUMER_GROUPS.AUTH;
 
   async handleEachMessage({ message }) {
-    const data = this.serialiseData<IBoardViewedEvent['data']>(message.value);
+    const data = JSON.parse(message.value) as IBoardViewedEvent['data'];
 
     const user = await User.findOneAndUpdate(
       { _id: data.userId },

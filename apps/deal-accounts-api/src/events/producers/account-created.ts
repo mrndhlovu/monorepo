@@ -4,6 +4,6 @@ import {
   KafkaTopics,
 } from '@loxodonta/deal-apis/shared-utils';
 
-export class AccountCreatedPublisher extends Producer<IAccountCreatedEvent> {
+export class AccountCreatedProducer extends Producer<IAccountCreatedEvent> {
   topic: KafkaTopics.AccountCreated = KafkaTopics.AccountCreated;
 }

@@ -8,7 +8,7 @@ import {
   kafkaService,
 } from '@loxodonta/deal-apis/shared-utils';
 import { IOrderDetails } from '../types';
-import { PaymentCreatedProducer } from '../events/publishers/payment-created';
+import { PaymentCreatedProducer } from '../events/producers/payment-created';
 
 declare global {
   namespace Express {
@@ -68,7 +68,7 @@ class PaymentController {
 
       await payment.save();
 
-      new PaymentCreatedProducer(kafkaService.client).publish({
+      await new PaymentCreatedProducer(kafkaService.client).publish({
         ownerId: req.currentUserJwt.userId!,
         customerId: data.customerId!,
         productId: data.productId!,

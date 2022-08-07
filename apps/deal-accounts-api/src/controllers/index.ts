@@ -8,12 +8,15 @@ import {
   BadRequestError,
   HTTPStatusCode,
   IJwtAuthToken,
+  kafkaService,
   NotFoundError,
 } from '@loxodonta/deal-apis/shared-utils';
 
-import { AccountCreatedPublisher } from '../events/publishers/account-created';
 import { accountService } from '../services/account';
-import { AccountUpdatedPublisher } from '../events/publishers';
+import {
+  AccountUpdatedProducer,
+  AccountCreatedProducer,
+} from '../events/producers';
 import { allowedAccountUpdateFields } from '../utils/constants';
 
 import { spotifyService } from '../services/spotify';
@@ -278,7 +281,7 @@ class AccountController {
 
     const eventData = accountService.getEventData(populatedAccount);
 
-    // new AccountUpdatedPublisher(natsService.client).publish(eventData);
+    await new AccountUpdatedProducer(kafkaService.client).publish(eventData);
 
     res.status(HTTPStatusCode.OK).send();
   };
@@ -307,7 +310,7 @@ class AccountController {
 
     const eventData = accountService.getEventData(populatedAccount);
 
-    // new AccountUpdatedPublisher(natsService.client).publish(eventData);
+    await new AccountUpdatedProducer(kafkaService.client).publish(eventData);
 
     res.send(powerUp);
   }
@@ -322,7 +325,7 @@ class AccountController {
 
     const eventData = accountService.getEventData(account);
 
-    // new AccountCreatedPublisher(natsService.client).publish(eventData);
+    await new AccountCreatedProducer(kafkaService.client).publish(eventData);
 
     res.status(201).send(account);
   };
@@ -343,7 +346,7 @@ class AccountController {
       const eventData = accountService.getEventData(updatedRecord);
       eventData.email = req.currentUserJwt.email;
 
-      // new AccountUpdatedPublisher(natsService.client).publish(eventData);
+      await new AccountUpdatedProducer(kafkaService.client).publish(eventData);
       return res.status(201).send({ isVerified });
     }
 
@@ -376,7 +379,7 @@ class AccountController {
 
     const eventData = accountService.getEventData(updatedRecord);
 
-    // new AccountUpdatedPublisher(natsService.client).publish(eventData);
+    await new AccountUpdatedProducer(kafkaService.client).publish(eventData);
 
     res.status(200).send(updatedRecord);
   };

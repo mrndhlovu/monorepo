@@ -102,7 +102,6 @@ export class AuthMiddleWare {
         req.session = null;
         throw new NotAuthorisedError('Authorization credentials are missing.');
       }
-      console.log({ authorizationToken, jwtSignatureKey });
 
       const currentUserJwt = TokenService.getVerifiedJwtValue(
         sessionJwtToken,
@@ -253,7 +252,7 @@ export class AuthMiddleWare {
           `Access denied: account status is ${existingUser.status}`
         );
       }
-      // new SendEmailPublisher(natsService.client).publish({
+      // new SendEmailProducer(natsService.client).publish({
       //   html: `Your six digit verification code is:<div>Code: <h3>${authToken}</h3></div>`,
       //   email: updatedUser.email,
       //   subject: "Six digit verification code.",

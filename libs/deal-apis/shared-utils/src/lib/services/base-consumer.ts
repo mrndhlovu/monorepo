@@ -1,4 +1,4 @@
-import { EachMessagePayload, Kafka } from 'kafkajs';
+import { Kafka, KafkaMessage } from 'kafkajs';
 import { KafkaTopics } from '../types';
 
 interface IEvent {
@@ -7,42 +7,43 @@ interface IEvent {
 }
 
 export abstract class Consumer<T extends IEvent> {
-  abstract handleEachMessage(options: EachMessagePayload): Promise<void>;
+  abstract handleEachMessage(options: { message: KafkaMessage }): Promise<void>;
   abstract topic: T['topic'];
-  abstract queueGroupName: string;
+  abstract groupId: string;
   private client: Kafka;
 
   constructor(client: Kafka) {
     this.client = client;
   }
 
-  serialiseData<T>(data: string) {
-    if (!data) return;
-    return JSON.parse(data) as T;
-  }
-
   async listen(): Promise<void> {
     try {
       const consumer = this.client.consumer({
-        groupId: this.queueGroupName,
+        groupId: this.groupId,
       });
       console.log('Connecting consumer...');
       await consumer.connect();
       console.log('Connected!');
       console.log({ topic: this.topic });
 
-      consumer.subscribe({
-        topic: this.topic,
-        fromBeginning: true,
-      });
+      consumer.subscribe({ topic: this.topic });
 
       await consumer.run({
-        eachMessage: this.handleEachMessage,
+        autoCommit: true,
+        eachBatch: async ({ batch, resolveOffset, heartbeat }) => {
+          for (let message of batch.messages) {
+            console.log(`TOPIC:====> ${this.topic}`);
+
+            await this.handleEachMessage({ message });
+            await resolveOffset(message.offset);
+            await heartbeat();
+          }
+        },
       });
 
-      console.log('Sent Successfully!');
+      console.log('CONSUMER LISTENING!');
     } catch (error: any) {
-      console.error(error.message);
+      console.log('ERROR:====> ', error);
     }
   }
 }

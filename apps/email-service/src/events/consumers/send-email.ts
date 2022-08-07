@@ -1,18 +1,19 @@
 import {
   IEmailEvent,
-  queueGroupNames,
+  CONSUMER_GROUPS,
   KafkaTopics,
   Consumer,
 } from '@loxodonta/deal-apis/shared-utils';
 import { EmailService } from '../../services';
 
-export class SendEmailListener extends Consumer<IEmailEvent> {
+export class SendEmailConsumer extends Consumer<IEmailEvent> {
   readonly topic: KafkaTopics.Email = KafkaTopics.Email;
-  queueGroupName = queueGroupNames.EMAIL_QUEUE_GROUP;
+  groupId = CONSUMER_GROUPS.EMAIL;
 
   async handleEachMessage({ message }) {
-    const data = this.serialiseData<IEmailEvent['data']>(message.value);
-    console.log('Event data', data);
+    const data = JSON.parse(message.value) as IEmailEvent['data'];
+
+    console.log('EVENT RECEIVED====>', data);
 
     await EmailService.send(data);
   }

@@ -1,20 +1,9 @@
-import {
-  BadRequestError,
-  Database,
-  kafkaService,
-} from '@loxodonta/deal-apis/shared-utils';
-
+import { BadRequestError, Database } from '@loxodonta/deal-apis/shared-utils';
+import { KafkaClient } from './services';
 import app from './app';
-import {
-  AuthActionListener,
-  NotificationCreatedConsumer,
-  PaymentCreatedConsumer,
-  UserDeletedConsumer,
-  UserVerifiedConsumer,
-} from './events/listeners';
 
 class Server {
-  private loadEnvVariables() {
+  private static loadEnvVariables() {
     const {
       PORT,
       MONGO_URI,
@@ -38,28 +27,12 @@ class Server {
     }
   }
 
-  private async connectEventBus() {
-    await kafkaService.init({
-      clientId: process.env.KAFKA_CLIENT_ID,
-      brokers: [process.env.KAFKA_BROKERS],
-    });
-
-    await new UserDeletedConsumer(kafkaService.client).listen();
-    await new UserVerifiedConsumer(kafkaService.client).listen();
-    await new PaymentCreatedConsumer(kafkaService.client).listen();
-    await new AuthActionListener(kafkaService.client).listen();
-    await new NotificationCreatedConsumer(kafkaService.client).listen();
-  }
-
-  async start() {
-    this.loadEnvVariables();
+  static async start() {
+    Server.loadEnvVariables();
 
     const { NODE_ENV, PORT } = process.env;
-    console.log({ PORT });
 
     const port = 5001; //parseInt(PORT!, 10);
-
-    await this.connectEventBus();
 
     await Database.connect({ dbName: 'accounts', uri: process.env.MONGO_URI });
     app.listen(port, () => {
@@ -75,6 +48,5 @@ class Server {
   }
 }
 
-const server = new Server();
-
-server.start();
+KafkaClient.run();
+Server.start();

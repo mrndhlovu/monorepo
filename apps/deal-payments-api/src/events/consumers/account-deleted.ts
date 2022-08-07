@@ -4,20 +4,18 @@ import { paymentService, stripeService } from '../../services';
 import {
   Consumer,
   KafkaTopics,
-  queueGroupNames,
+  CONSUMER_GROUPS,
   IAccountDeletedEvent,
 } from '@loxodonta/deal-apis/shared-utils';
 
 export class AccountDeletedConsumer extends Consumer<IAccountDeletedEvent> {
   readonly topic: KafkaTopics.AccountDeleted = KafkaTopics.AccountDeleted;
-  queueGroupName = queueGroupNames.PAYMENTS_QUEUE_GROUP;
+  groupId = CONSUMER_GROUPS.PAYMENTS;
 
   async handleEachMessage({ message }) {
-    const data = this.serialiseData<IAccountDeletedEvent['data']>(
-      message.value
-    );
+    const data = JSON.parse(message.value) as IAccountDeletedEvent['data'];
 
-    console.log('Event data ', data);
+    console.log('EVENT RECEIVED====> ', data);
 
     try {
       const order = await paymentService.findOrderByOwnerId(data.userId);

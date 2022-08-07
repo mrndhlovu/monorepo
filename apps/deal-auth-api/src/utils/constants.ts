@@ -21,7 +21,7 @@ export const allowedOrigins = [
 
 export const USER_EXCLUDED_OPTIONS = '-refreshTokens -accessTokens -mfaTokens';
 
-export const BOARDS_QUEUE_GROUP_NAME = 'boards-service';
+export const BOARDS_NAME = 'boards-service';
 
 export const DEFAULT_EMAIL = 'kandhlovuie@gmail.com';
 

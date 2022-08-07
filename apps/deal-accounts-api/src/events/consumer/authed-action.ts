@@ -3,7 +3,7 @@ import { Message } from 'node-nats-streaming';
 import {
   Consumer,
   KafkaTopics,
-  queueGroupNames,
+  CONSUMER_GROUPS,
   IAuthedActionEvent,
   ACTION_KEYS,
 } from '@loxodonta/deal-apis/shared-utils';
@@ -11,12 +11,12 @@ import Action from '../../models/Action';
 import { getNotificationContext } from '../../helpers';
 import Notification from '../../models/Notification';
 
-export class AuthActionListener extends Consumer<IAuthedActionEvent> {
+export class AuthActionConsumer extends Consumer<IAuthedActionEvent> {
   readonly topic: KafkaTopics.AuthedAction = KafkaTopics.AuthedAction;
-  queueGroupName = queueGroupNames.AUTH_ACTION_QUEUE_GROUP;
+  groupId = CONSUMER_GROUPS.AUTH_ACTION;
 
   async handleEachMessage({ message }) {
-    const data = this.serialiseData<IAuthedActionEvent['data']>(message.value);
+    const data = JSON.parse(message.value) as IAuthedActionEvent['data'];
     console.log(data);
 
     if (data.actionKey === ACTION_KEYS.REMOVE_CARD_ATTACHMENT) {

@@ -1,9 +1,6 @@
-import {
-  BadRequestError,
-  kafkaService,
-} from '@loxodonta/deal-apis/shared-utils';
+import { BadRequestError } from '@loxodonta/deal-apis/shared-utils';
+import { KafkaClient } from './services/kafka-client';
 import app from './app';
-import { SendEmailListener } from './events/consumers';
 
 class Server {
   private static loadEnvVariables() {
@@ -15,22 +12,12 @@ class Server {
     }
   }
 
-  private static async connectEventBus() {
-    await kafkaService.init({
-      clientId: process.env.KAFKA_CLIENT_ID,
-      brokers: [process.env.KAFKA_BROKERS],
-    });
-    new SendEmailListener(kafkaService.client).listen();
-  }
-
   static async start() {
     Server.loadEnvVariables();
 
-    const { NODE_ENV, PORT } = process.env;
+    const { NODE_ENV } = process.env;
 
-    const port = 5003; // parseInt(PORT!, 10);
-
-    await Server.connectEventBus();
+    const port = 5003; //parseInt(PORT!, 10);
 
     app.listen(port, () => {
       const serverStatus = [
@@ -45,4 +32,5 @@ class Server {
   }
 }
 
+KafkaClient.run();
 Server.start();

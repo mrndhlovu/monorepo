@@ -1,24 +1,24 @@
 import {
   Consumer,
   KafkaTopics,
-  queueGroupNames,
+  CONSUMER_GROUPS,
   INewActionEvent,
   kafkaService,
 } from '@loxodonta/deal-apis/shared-utils';
 
 import { User } from '../../models/User';
-import { AuthedActionPublisher } from '../producers/authed-action';
+import { AuthedActionProducer } from '../producers/authed-action';
 
 export class NewActionConsumer extends Consumer<INewActionEvent> {
   readonly topic: KafkaTopics.NewAction = KafkaTopics.NewAction;
-  queueGroupName = queueGroupNames.AUTH_ACTION_QUEUE_GROUP;
+  groupId = CONSUMER_GROUPS.AUTH_ACTION;
 
   async handleEachMessage({ message }) {
-    const data = this.serialiseData<INewActionEvent['data']>(message.value);
+    const data = JSON.parse(message.value) as INewActionEvent['data'];
     const user = await User.findById(data.userId);
 
     if (user) {
-      new AuthedActionPublisher(kafkaService.client).publish({
+      await new AuthedActionProducer(kafkaService.client).publish({
         ...data,
         user: {
           id: user._id,

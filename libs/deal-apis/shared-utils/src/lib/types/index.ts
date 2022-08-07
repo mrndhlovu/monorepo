@@ -42,6 +42,7 @@ export interface IAccountFields {
   expired: boolean;
   expiresAt: string;
   id: string;
+  userId: string;
   isTrial: boolean;
   isVerified: boolean;
   plan: AccountOptions;
@@ -118,15 +119,15 @@ export enum ACTION_KEYS {
   MOVE_LIST_RIGHT = 'move:list:right',
 }
 
-export enum queueGroupNames {
-  BOARDS_QUEUE_GROUP = 'boards-service',
-  CARDS_QUEUE_GROUP = 'cards-service',
-  LIST_QUEUE_GROUP = 'list-service',
-  AUTH_QUEUE_GROUP = 'auth-service',
-  AUTH_ACTION_QUEUE_GROUP = 'action-service',
-  ACCOUNT_QUEUE_GROUP = 'accounts-service',
-  PAYMENTS_QUEUE_GROUP = 'payment-service',
-  EMAIL_QUEUE_GROUP = 'email-service',
+export enum CONSUMER_GROUPS {
+  BOARDS = 'boards-service',
+  CARDS = 'cards-service',
+  LIST = 'list-service',
+  AUTH = 'auth-service',
+  AUTH_ACTION = 'action-service',
+  ACCOUNT = 'accounts-service',
+  PAYMENTS = 'payment-service',
+  EMAIL = 'email-service',
 }
 
 export enum AccountStatus {
