@@ -1,13 +1,13 @@
 import {
   Consumer,
-  KafkaTopics,
+  KAFKA_TOPICS,
   CONSUMER_GROUPS,
   IBoardViewedEvent,
 } from '@loxodonta/deal-apis/shared-utils';
 import { User } from '../../models/User';
 
 export class BoardViewedConsumer extends Consumer<IBoardViewedEvent> {
-  readonly topic: KafkaTopics.BoardViewed = KafkaTopics.BoardViewed;
+  readonly topic: KAFKA_TOPICS.BoardViewed = KAFKA_TOPICS.BoardViewed;
   groupId = CONSUMER_GROUPS.AUTH;
 
   async handleEachMessage({ message }) {

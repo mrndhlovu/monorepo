@@ -3,15 +3,15 @@ import { Message } from 'node-nats-streaming';
 import {
   Consumer,
   CONSUMER_GROUPS,
-  KafkaTopics,
+  KAFKA_TOPICS,
   ICreateNotificationEvent,
 } from '@loxodonta/deal-apis/shared-utils';
 
 import Notification from '../../models/Notification';
 
 export class NotificationCreatedConsumer extends Consumer<ICreateNotificationEvent> {
-  readonly topic: KafkaTopics.CreateNotification =
-    KafkaTopics.CreateNotification;
+  readonly topic: KAFKA_TOPICS.CreateNotification =
+    KAFKA_TOPICS.CreateNotification;
   groupId = CONSUMER_GROUPS.ACCOUNT;
 
   handleEachMessage = async ({ message }) => {

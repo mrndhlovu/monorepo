@@ -1,7 +1,7 @@
-import { KafkaTopics } from '../../types';
+import { KAFKA_TOPICS } from '../../types';
 import { IBoardCreatedEvent } from './board-created-event';
 
 export interface IBoardDeletedEvent {
-  topic: KafkaTopics.BoardDeleted;
+  topic: KAFKA_TOPICS.BoardDeleted;
   data: IBoardCreatedEvent['data'];
 }

@@ -1,8 +1,8 @@
 import { Kafka, KafkaMessage } from 'kafkajs';
-import { KafkaTopics } from '../types';
+import { KAFKA_TOPICS } from '../types';
 
 interface IEvent {
-  topic: KafkaTopics;
+  topic: KAFKA_TOPICS;
   data: unknown;
 }
 
@@ -26,10 +26,12 @@ export abstract class Consumer<T extends IEvent> {
       console.log('Connected!');
       console.log({ topic: this.topic });
 
-      consumer.subscribe({ topic: this.topic });
+      await consumer.subscribe({ topic: this.topic });
 
       await consumer.run({
         autoCommit: true,
+        autoCommitInterval: 5000,
+        autoCommitThreshold: 100,
         eachBatch: async ({ batch, resolveOffset, heartbeat }) => {
           for (let message of batch.messages) {
             console.log(`TOPIC:====> ${this.topic}`);

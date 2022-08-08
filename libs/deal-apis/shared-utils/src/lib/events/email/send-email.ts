@@ -1,7 +1,7 @@
-import { KafkaTopics } from '../../types';
+import { KAFKA_TOPICS } from '../../types';
 
 export interface IEmailEvent {
-  topic: KafkaTopics.Email;
+  topic: KAFKA_TOPICS.Email;
   data: {
     body?: string;
     cc?: string;

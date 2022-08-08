@@ -1,5 +1,5 @@
 import { Kafka } from 'kafkajs';
-import { IKafkaInitConfig, KafkaTopics } from '../types';
+import { IKafkaInitConfig, KAFKA_TOPICS } from '../types';
 
 class KafkaService {
   private _client?: Kafka;
@@ -11,7 +11,7 @@ class KafkaService {
   }
 
   get topics() {
-    return Object.values(KafkaTopics).map((value) => ({
+    return Object.values(KAFKA_TOPICS).map((value) => ({
       topic: value,
       numPartitions: 3,
     }));

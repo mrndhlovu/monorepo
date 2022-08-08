@@ -2,7 +2,7 @@ import { Message } from 'node-nats-streaming';
 
 import {
   Consumer,
-  KafkaTopics,
+  KAFKA_TOPICS,
   CONSUMER_GROUPS,
   IAuthedActionEvent,
   ACTION_KEYS,
@@ -12,7 +12,7 @@ import { getNotificationContext } from '../../helpers';
 import Notification from '../../models/Notification';
 
 export class AuthActionConsumer extends Consumer<IAuthedActionEvent> {
-  readonly topic: KafkaTopics.AuthedAction = KafkaTopics.AuthedAction;
+  readonly topic: KAFKA_TOPICS.AuthedAction = KAFKA_TOPICS.AuthedAction;
   groupId = CONSUMER_GROUPS.AUTH_ACTION;
 
   async handleEachMessage({ message }) {

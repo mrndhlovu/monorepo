@@ -2,14 +2,14 @@ import {
   IUserDeletedEvent,
   Consumer,
   CONSUMER_GROUPS,
-  KafkaTopics,
+  KAFKA_TOPICS,
   kafkaService,
 } from '@loxodonta/deal-apis/shared-utils';
 import Account from '../../models/Account';
 import { AccountDeletedProducer } from '../producers';
 
 export class UserDeletedConsumer extends Consumer<IUserDeletedEvent> {
-  readonly topic: KafkaTopics.UserDeleted = KafkaTopics.UserDeleted;
+  readonly topic: KAFKA_TOPICS.UserDeleted = KAFKA_TOPICS.UserDeleted;
   groupId = CONSUMER_GROUPS.ACCOUNT;
 
   handleEachMessage = async ({ message }) => {

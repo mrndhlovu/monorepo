@@ -2,14 +2,14 @@ import { stripeService } from '../../services';
 import {
   kafkaService,
   Consumer,
-  KafkaTopics,
+  KAFKA_TOPICS,
   CONSUMER_GROUPS,
   IAccountUpdatedEvent,
 } from '@loxodonta/deal-apis/shared-utils';
 import { CustomerCreatedProducer } from '../producers';
 
 export class AccountUpdatedConsumer extends Consumer<IAccountUpdatedEvent> {
-  readonly topic: KafkaTopics.AccountUpdated = KafkaTopics.AccountUpdated;
+  readonly topic: KAFKA_TOPICS.AccountUpdated = KAFKA_TOPICS.AccountUpdated;
   groupId = CONSUMER_GROUPS.PAYMENTS;
 
   async handleEachMessage({ message }) {

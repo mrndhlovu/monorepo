@@ -3,13 +3,13 @@ import Order from '../../models/Order';
 import { paymentService, stripeService } from '../../services';
 import {
   Consumer,
-  KafkaTopics,
+  KAFKA_TOPICS,
   CONSUMER_GROUPS,
   IAccountDeletedEvent,
 } from '@loxodonta/deal-apis/shared-utils';
 
 export class AccountDeletedConsumer extends Consumer<IAccountDeletedEvent> {
-  readonly topic: KafkaTopics.AccountDeleted = KafkaTopics.AccountDeleted;
+  readonly topic: KAFKA_TOPICS.AccountDeleted = KAFKA_TOPICS.AccountDeleted;
   groupId = CONSUMER_GROUPS.PAYMENTS;
 
   async handleEachMessage({ message }) {

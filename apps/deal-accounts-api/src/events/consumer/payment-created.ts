@@ -4,7 +4,7 @@ import {
   IPaymentCreatedEvent,
   Consumer,
   CONSUMER_GROUPS,
-  KafkaTopics,
+  KAFKA_TOPICS,
   kafkaService,
 } from '@loxodonta/deal-apis/shared-utils';
 
@@ -12,7 +12,7 @@ import { AccountUpdatedProducer } from '../producers';
 import { accountService } from '../../services';
 
 export class PaymentCreatedConsumer extends Consumer<IPaymentCreatedEvent> {
-  readonly topic: KafkaTopics.PaymentCreated = KafkaTopics.PaymentCreated;
+  readonly topic: KAFKA_TOPICS.PaymentCreated = KAFKA_TOPICS.PaymentCreated;
   groupId = CONSUMER_GROUPS.PAYMENTS;
 
   handleEachMessage = async ({ message }) => {

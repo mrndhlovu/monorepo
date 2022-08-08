@@ -1,9 +1,9 @@
 import {
   IPaymentCreatedEvent,
-  KafkaTopics,
+  KAFKA_TOPICS,
   Producer,
 } from '@loxodonta/deal-apis/shared-utils';
 
 export class PaymentCreatedProducer extends Producer<IPaymentCreatedEvent> {
-  topic: KafkaTopics.PaymentCreated = KafkaTopics.PaymentCreated;
+  topic: KAFKA_TOPICS.PaymentCreated = KAFKA_TOPICS.PaymentCreated;
 }

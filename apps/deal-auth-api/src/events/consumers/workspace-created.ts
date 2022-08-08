@@ -1,13 +1,13 @@
 import {
   Consumer,
-  KafkaTopics,
+  KAFKA_TOPICS,
   CONSUMER_GROUPS,
   IWorkspaceCreatedEvent,
 } from '@loxodonta/deal-apis/shared-utils';
 import { User } from '../../models/User';
 
 export class WorkspaceCreatedConsumer extends Consumer<IWorkspaceCreatedEvent> {
-  readonly topic: KafkaTopics.WorkspaceCreated = KafkaTopics.WorkspaceCreated;
+  readonly topic: KAFKA_TOPICS.WorkspaceCreated = KAFKA_TOPICS.WorkspaceCreated;
   groupId = CONSUMER_GROUPS.AUTH;
 
   async handleEachMessage({ message }) {

@@ -1,6 +1,6 @@
-import { IEventUserData, KafkaTopics } from '../../types';
+import { IEventUserData, KAFKA_TOPICS } from '../../types';
 
 export interface IUserVerifiedEvent {
-  topic: KafkaTopics.UserVerified;
+  topic: KAFKA_TOPICS.UserVerified;
   data: IEventUserData;
 }

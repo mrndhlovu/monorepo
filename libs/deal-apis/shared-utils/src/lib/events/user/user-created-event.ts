@@ -1,4 +1,4 @@
-import { KafkaTopics, IEventUserData } from '../../types';
+import { KAFKA_TOPICS, IEventUserData } from '../../types';
 
 interface UserData extends IEventUserData {
   username: string;
@@ -7,6 +7,6 @@ interface UserData extends IEventUserData {
 }
 
 export interface IUserCreatedEvent {
-  topic: KafkaTopics.UserCreated;
+  topic: KAFKA_TOPICS.UserCreated;
   data: UserData;
 }

@@ -1,7 +1,7 @@
-import { KafkaTopics } from '../../types';
+import { KAFKA_TOPICS } from '../../types';
 
 export interface IWorkspaceCreatedEvent {
-  topic: KafkaTopics.WorkspaceCreated;
+  topic: KAFKA_TOPICS.WorkspaceCreated;
   data: {
     id: string;
     ownerId: string;
@@ -9,7 +9,7 @@ export interface IWorkspaceCreatedEvent {
 }
 
 export interface IWorkspaceUpdatedEvent {
-  topic: KafkaTopics.WorkspaceUpdated;
+  topic: KAFKA_TOPICS.WorkspaceUpdated;
   data: {
     id: string;
     ownerId: string;

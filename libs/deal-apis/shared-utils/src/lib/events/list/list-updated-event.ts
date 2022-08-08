@@ -1,7 +1,7 @@
-import { KafkaTopics } from '../../types';
+import { KAFKA_TOPICS } from '../../types';
 
 export interface IListUpdatedEvent {
-  topic: KafkaTopics.ListUpdated;
+  topic: KAFKA_TOPICS.ListUpdated;
   data: {
     id: string;
     boardId: string;

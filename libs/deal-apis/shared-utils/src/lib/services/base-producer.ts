@@ -1,8 +1,8 @@
-import { KafkaTopics } from '../types';
+import { KAFKA_TOPICS } from '../types';
 import { Kafka, ProducerRecord } from 'kafkajs';
 
 interface IKafkaEvent {
-  topic: KafkaTopics;
+  topic: KAFKA_TOPICS;
   data: unknown;
 }
 

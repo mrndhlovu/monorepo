@@ -1,4 +1,4 @@
-import { ACTION_TYPES, IEventUserData, KafkaTopics } from '../../types';
+import { ACTION_TYPES, IEventUserData, KAFKA_TOPICS } from '../../types';
 
 interface UserData extends IEventUserData {
   username: string;
@@ -7,7 +7,7 @@ interface UserData extends IEventUserData {
 }
 
 export interface IAuthedActionEvent {
-  topic: KafkaTopics.AuthedAction;
+  topic: KAFKA_TOPICS.AuthedAction;
   data: {
     actionKey: string;
     entities: { [key: string]: any };

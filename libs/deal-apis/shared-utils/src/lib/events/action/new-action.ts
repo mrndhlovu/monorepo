@@ -1,7 +1,7 @@
 import { INewActionEvent } from '../user/new-action';
 import { Producer } from '../../services/base-producer';
-import { KafkaTopics } from '../../types';
+import { KAFKA_TOPICS } from '../../types';
 
 export class NewActionProducer extends Producer<INewActionEvent> {
-  topic: KafkaTopics.NewAction = KafkaTopics.NewAction;
+  topic: KAFKA_TOPICS.NewAction = KAFKA_TOPICS.NewAction;
 }

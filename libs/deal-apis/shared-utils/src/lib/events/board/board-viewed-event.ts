@@ -1,7 +1,7 @@
-import { KafkaTopics } from '../../types';
+import { KAFKA_TOPICS } from '../../types';
 
 export interface IBoardViewedEvent {
-  topic: KafkaTopics.BoardViewed;
+  topic: KAFKA_TOPICS.BoardViewed;
   data: {
     userId: string;
     boardId: string;

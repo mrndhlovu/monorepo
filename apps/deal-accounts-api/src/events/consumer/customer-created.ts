@@ -4,7 +4,7 @@ import {
   ICustomerCreated,
   Consumer,
   CONSUMER_GROUPS,
-  KafkaTopics,
+  KAFKA_TOPICS,
   kafkaService,
   SendEmailProducer,
 } from '@loxodonta/deal-apis/shared-utils';
@@ -14,7 +14,7 @@ import { AccountUpdatedProducer } from '../producers';
 import { DEFAULT_EMAIL } from '../../utils/constants';
 
 export class CustomerCreatedConsumer extends Consumer<ICustomerCreated> {
-  readonly topic: KafkaTopics.CustomerCreated = KafkaTopics.CustomerCreated;
+  readonly topic: KAFKA_TOPICS.CustomerCreated = KAFKA_TOPICS.CustomerCreated;
   groupId = CONSUMER_GROUPS.PAYMENTS;
 
   handleEachMessage = async ({ message }) => {

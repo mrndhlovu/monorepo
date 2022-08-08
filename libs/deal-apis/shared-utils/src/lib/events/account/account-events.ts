@@ -1,12 +1,12 @@
-import { IAccountFields, KafkaTopics } from '../../types';
+import { IAccountFields, KAFKA_TOPICS } from '../../types';
 
 export interface IAccountCreatedEvent {
-  topic: KafkaTopics.AccountCreated;
+  topic: KAFKA_TOPICS.AccountCreated;
   data: IAccountFields;
 }
 
 export interface ICustomerCreated {
-  topic: KafkaTopics.CustomerCreated;
+  topic: KAFKA_TOPICS.CustomerCreated;
   data: {
     userId: string;
     customerId: string;
@@ -15,7 +15,7 @@ export interface ICustomerCreated {
 }
 
 export interface ICustomerDeleted {
-  topic: KafkaTopics.CustomerDeleted;
+  topic: KAFKA_TOPICS.CustomerDeleted;
   data: {
     userId: string;
     customerId: string;
@@ -23,12 +23,12 @@ export interface ICustomerDeleted {
 }
 
 export interface IAccountUpdatedEvent {
-  topic: KafkaTopics.AccountUpdated;
+  topic: KAFKA_TOPICS.AccountUpdated;
   data: IAccountFields;
 }
 
 export interface IAccountDeletedEvent {
-  topic: KafkaTopics.AccountDeleted;
+  topic: KAFKA_TOPICS.AccountDeleted;
   data: {
     email: string;
     userId: string;

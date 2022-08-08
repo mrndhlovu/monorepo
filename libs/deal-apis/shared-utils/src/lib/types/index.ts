@@ -50,7 +50,7 @@ export interface IAccountFields {
   email?: string;
 }
 
-export enum KafkaTopics {
+export enum KAFKA_TOPICS {
   AccountCreated = 'account-created',
   AccountDeleted = 'account-deleted',
   AccountUpdated = 'account-updated',

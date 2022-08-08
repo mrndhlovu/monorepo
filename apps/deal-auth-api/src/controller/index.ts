@@ -306,6 +306,8 @@ class AuthController {
     await user.delete();
 
     if (user.isVerified) {
+      console.log('DELETE');
+
       await new UserDeletedProducer(kafkaService.client).publish({
         id: userId,
         boardIds,

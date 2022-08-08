@@ -1,9 +1,9 @@
 import {
   IAuthedActionEvent,
   Producer,
-  KafkaTopics,
+  KAFKA_TOPICS,
 } from '@loxodonta/deal-apis/shared-utils';
 
 export class AuthedActionProducer extends Producer<IAuthedActionEvent> {
-  topic: KafkaTopics.AuthedAction = KafkaTopics.AuthedAction;
+  topic: KAFKA_TOPICS.AuthedAction = KAFKA_TOPICS.AuthedAction;
 }

@@ -1,9 +1,9 @@
 import {
   IUserDeletedEvent,
   Producer,
-  KafkaTopics,
+  KAFKA_TOPICS,
 } from '@loxodonta/deal-apis/shared-utils';
 
 export class UserDeletedProducer extends Producer<IUserDeletedEvent> {
-  topic: KafkaTopics.UserDeleted = KafkaTopics.UserDeleted;
+  topic: KAFKA_TOPICS.UserDeleted = KAFKA_TOPICS.UserDeleted;
 }

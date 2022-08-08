@@ -2,12 +2,12 @@ import {
   IBoardDeletedEvent,
   Consumer,
   CONSUMER_GROUPS,
-  KafkaTopics,
+  KAFKA_TOPICS,
 } from '@loxodonta/deal-apis/shared-utils';
 import { User } from '../../models/User';
 
 export class BoardDeletedConsumer extends Consumer<IBoardDeletedEvent> {
-  readonly topic: KafkaTopics.BoardDeleted = KafkaTopics.BoardDeleted;
+  readonly topic: KAFKA_TOPICS.BoardDeleted = KAFKA_TOPICS.BoardDeleted;
   groupId = CONSUMER_GROUPS.BOARDS;
 
   async handleEachMessage({ message }) {

@@ -1,6 +1,6 @@
 import {
   Consumer,
-  KafkaTopics,
+  KAFKA_TOPICS,
   CONSUMER_GROUPS,
   INewActionEvent,
   kafkaService,
@@ -10,7 +10,7 @@ import { User } from '../../models/User';
 import { AuthedActionProducer } from '../producers/authed-action';
 
 export class NewActionConsumer extends Consumer<INewActionEvent> {
-  readonly topic: KafkaTopics.NewAction = KafkaTopics.NewAction;
+  readonly topic: KAFKA_TOPICS.NewAction = KAFKA_TOPICS.NewAction;
   groupId = CONSUMER_GROUPS.AUTH_ACTION;
 
   async handleEachMessage({ message }) {

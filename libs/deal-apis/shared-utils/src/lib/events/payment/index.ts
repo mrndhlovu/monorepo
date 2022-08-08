@@ -1,12 +1,12 @@
-import { INewPayment, KafkaTopics } from '../../types';
+import { INewPayment, KAFKA_TOPICS } from '../../types';
 
 export interface IPaymentCreatedEvent {
-  topic: KafkaTopics.PaymentCreated;
+  topic: KAFKA_TOPICS.PaymentCreated;
   data: INewPayment;
 }
 
 export interface IPaymentFailedEvent {
-  topic: KafkaTopics.PaymentCreated;
+  topic: KAFKA_TOPICS.PaymentCreated;
   data: {
     productId?: string;
     customerId: string;

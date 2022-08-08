@@ -3,7 +3,7 @@ import {
   IUserVerifiedEvent,
   Consumer,
   CONSUMER_GROUPS,
-  KafkaTopics,
+  KAFKA_TOPICS,
   kafkaService,
   IAccountFields,
 } from '@loxodonta/deal-apis/shared-utils';
@@ -14,7 +14,7 @@ import Account from '../../models/Account';
 import Notification from '../../models/Notification';
 
 export class UserVerifiedConsumer extends Consumer<IUserVerifiedEvent> {
-  readonly topic: KafkaTopics.UserVerified = KafkaTopics.UserVerified;
+  readonly topic: KAFKA_TOPICS.UserVerified = KAFKA_TOPICS.UserVerified;
   groupId = CONSUMER_GROUPS.ACCOUNT;
 
   async handleEachMessage({ message }) {

@@ -1,4 +1,4 @@
-import { IEventUserData, KafkaTopics } from '../../types';
+import { IEventUserData, KAFKA_TOPICS } from '../../types';
 
 interface UserData extends IEventUserData {
   email: string;
@@ -6,6 +6,6 @@ interface UserData extends IEventUserData {
 }
 
 export interface IUserDeletedEvent {
-  topic: KafkaTopics.UserDeleted;
+  topic: KAFKA_TOPICS.UserDeleted;
   data: UserData;
 }
