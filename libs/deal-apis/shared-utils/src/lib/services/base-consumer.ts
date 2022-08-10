@@ -18,29 +18,20 @@ export abstract class Consumer<T extends IEvent> {
 
   async listen(): Promise<void> {
     try {
-      const consumer = this.client.consumer({
-        groupId: this.groupId,
-      });
+      const consumer = this.client.consumer({ groupId: this.groupId });
       console.log('Connecting consumer...');
       await consumer.connect();
       console.log('Connected!');
-      console.log({ topic: this.topic });
 
-      await consumer.subscribe({ topic: this.topic });
+      await consumer.subscribe({
+        topics: [this.topic],
+        fromBeginning: false,
+      });
 
       await consumer.run({
-        autoCommit: true,
         autoCommitInterval: 5000,
-        autoCommitThreshold: 100,
-        eachBatch: async ({ batch, resolveOffset, heartbeat }) => {
-          for (let message of batch.messages) {
-            console.log(`TOPIC:====> ${this.topic}`);
-
-            await this.handleEachMessage({ message });
-            await resolveOffset(message.offset);
-            await heartbeat();
-          }
-        },
+        autoCommitThreshold: 1,
+        eachMessage: this.handleEachMessage,
       });
 
       console.log('CONSUMER LISTENING!');

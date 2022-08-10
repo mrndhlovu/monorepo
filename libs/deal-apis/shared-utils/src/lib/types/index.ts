@@ -50,45 +50,56 @@ export interface IAccountFields {
   email?: string;
 }
 
+export enum CONSUMER_GROUPS {
+  BOARDS = 'boards-service',
+  CARDS = 'cards-service',
+  LIST = 'list-service',
+  AUTH = 'auth-service',
+  AUTH_ACTION = 'action-service',
+  ACCOUNT = 'accounts-service',
+  PAYMENTS = 'payment-service',
+  EMAIL = 'email-service',
+}
+
 export enum KAFKA_TOPICS {
-  AccountCreated = 'account-created',
-  AccountDeleted = 'account-deleted',
-  AccountUpdated = 'account-updated',
+  AccountCreated = 'account-created-4',
+  AccountDeleted = 'account-deleted-2',
+  AccountUpdated = 'account-updated-5',
 
-  CustomerCreated = 'customer-created',
-  CustomerDeleted = 'customer-deleted',
+  CustomerCreated = 'customer-created-2',
+  CustomerDeleted = 'customer-deleted-1',
 
-  UserCreated = 'user-created',
-  UserUpdated = 'user-updated',
-  UserDeleted = 'user-deleted',
-  GetUser = 'user-request',
-  UserVerified = 'user-verified',
+  UserCreated = 'user-created-1',
+  UserUpdated = 'user-updated-4',
+  UserDeleted = 'user-deleted-3',
+  GetUser = 'user-request-2',
+  UserVerified = 'user-verified-2',
 
-  BoardCreated = 'board-created',
-  BoardDeleted = 'board-deleted',
-  BoardUpdated = 'board-updated',
-  BoardViewed = 'board-viewed',
-  GetBoardById = 'board-by-id',
-  GetBoards = 'boards-list',
+  BoardCreated = 'board-created-1',
+  BoardDeleted = 'board-deleted-1',
+  BoardUpdated = 'board-updated-1',
+  BoardViewed = 'board-viewed-1',
+  GetBoardById = 'board-by-id-1',
+  GetBoards = 'boards-list-1',
 
-  ListCreated = 'list-created',
-  ListUpdated = 'list-updated',
-  ListDeleted = 'list-deleted',
+  ListCreated = 'list-created-1',
+  ListUpdated = 'list-updated-1',
+  ListDeleted = 'list-deleted-1',
 
-  NewAction = 'action-new',
-  AuthedAction = 'action-authenticated',
+  NewAction = 'action-new-2',
+  AuthedAction = 'action-authenticated-3',
 
-  Card = 'card-created',
-  CardUpdated = 'card-updated',
+  Card = 'card-created-1',
+  CardUpdated = 'card-updated-1',
 
-  PaymentCreated = 'payments-created',
-  PaymentFailed = 'payments-failed',
+  PaymentCreated = 'payments-created-2',
+  PaymentFailed = 'payments-failed-1',
 
-  Email = 'send-email',
-  CreateNotification = 'create-notification',
+  Email = 'send-email-1',
+  CreateNotification = 'create-notification-1',
 
-  WorkspaceCreated = 'workspace-created',
-  WorkspaceUpdated = 'workspace-updated',
+  WorkspaceCreated = 'workspace-created-1',
+  WorkspaceUpdated = 'workspace-updated-1',
 }
 
 export enum ACTION_KEYS {
@@ -117,17 +128,6 @@ export enum ACTION_KEYS {
   ARCHIVED_LIST = 'archived:list',
   MOVE_LIST_LEFT = 'move:list:left',
   MOVE_LIST_RIGHT = 'move:list:right',
-}
-
-export enum CONSUMER_GROUPS {
-  BOARDS = 'boards-service',
-  CARDS = 'cards-service',
-  LIST = 'list-service',
-  AUTH = 'auth-service',
-  AUTH_ACTION = 'action-service',
-  ACCOUNT = 'accounts-service',
-  PAYMENTS = 'payment-service',
-  EMAIL = 'email-service',
 }
 
 export enum AccountStatus {

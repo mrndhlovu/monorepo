@@ -1,4 +1,4 @@
-import { IPermissionType } from './types';
+import { IPermissionType, KAFKA_TOPICS } from './types';
 
 interface IRoleOptions {
   [key: string]: IPermissionType;
